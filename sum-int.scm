@@ -1,5 +1,4 @@
 #lang racket
-
 ;; Note: Editied in Emacs using *.scm extension
 ;; Prof. Gerals Jay Sussman
 ;; Lecture 3

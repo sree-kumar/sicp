@@ -1,0 +1,1432 @@
+#+TITLE: The way I understood Lisp.
+#+AUTHOR: R.Sreekumar, Ph.D.
+#+EMAIL: sreekumar@am.amrita.edu
+#+LaTeX_HEADER: \usepackage{charter}
+#+OPTIONS: toc:nil
+
+* Introduction. [2020-07-08 Wed]
+  I started learning SICP, but stopped in the middle because
+  of lack of concentration and other parameters.  However,
+  that documentation is worth referring because, various
+  things I tried to run a *scheme/lisp/racket* programs are
+  documented there.
+
+  I had to install *Dr.Racket, mit-scheme, clisp* for my
+  experimentation as well as *guile* and *geiser* for
+  running my *scheme* programs within *org mode*.  All
+  these, and my experiments are documented there. The file
+  is available as [[file:08-july-2020.scip.org][in this file]] in the same directory.
+
+  Since my work is spanning many things from LISP, Teaching,
+  Programming, Software Development, Engineering Education
+  documentation, this document will also not be concise.
+
+* Chapter 1: Building Abstractions with Procedures
+  /Computational processes/ are abstract beings that inhabit
+  computers. As they evalove, computational processes manipulate other
+  abstract things called /data/.  When the process evolve
+  with a set of rules (or pattern of rules), it is called
+  /program/.
+
+** Aside:
+   I wrote a program which returns boolean value.  Generally
+   lisp returns /true/ or /false/.  But this is only for
+   primitive operations working on numbers such as equal to,
+   not equal to, greater than, less than, etc.
+
+   This is my attempt that returning coustomized return
+   values.
+
+   #+begin_src scheme exports: both
+   (define (divisible m n) (if (= 0 (remainder m n)) #t #f))
+   (list
+      (divisible 4 8)
+      (divisible 8 4))
+   #+end_src
+
+   #+RESULTS:
+   : '(#f #t)
+
+* Aside (From Little Schemer)
+** [2020-07-11 Sat]
+   I was working on *Little Schemer* examples.  One of the
+   problem was remove an element from list if it exisits. I
+   tried my hand and the following is the code:
+   #+begin_src scheme
+   (define rember
+     (lambda (a lat)
+       (cond
+         ((null? lat) ('()))
+         (else
+         (cond (eq? a (car lat)) (cdr lat)   ;; remove 'a' from 'lat'
+          (else (rember a (cdr lat))))))))
+   #+end_src
+   To my surprise the code I have written was exactly same
+   as the code given in book.  This is because the two
+   preivous programs *(lat? list)* and *(member? a lat)*
+   from the book have similar pattern. Refer to [[file:little-schemer.scm][this file.]]
+
+   However after seeing a seamless similarity between my
+   program and author's program, I had a doubt. How it will
+   maintain the previous list elements if the removed
+   element is not the first one (the program uses *(eq? a
+   (car lat)) => (cdr lat))*. Essentially, it will return
+   the remaining elements of the list excluding the current
+   element. Looks good. What about the previous elements in
+   the list?  I had this doubt and thought that since it is
+   a recursive function, the remaining elements will be
+   automatically appended.  To convince my answer, I wrote
+   the workdown of the entire process in two different ways.
+   They are (1-13: first way, 15-20: second way):
+   #+begin_src
+     1  (rember 'team '(I am a team member))
+     2  (null? lat) => #f
+     3  (eq? 'team 'I) => #f
+     4     (rember 'team '(am a team member))
+     5     (eq? 'team 'am) => #f
+     6        (rember 'team '(a team member))
+     7        (eq? 'team 'a) => #f
+     8          (rember 'team '(team member))  ;; retruns (member)
+     9          (eq? 'team 'team) => #t => (member)
+    10             (rember 'team 'member))
+    11             (eq? 'team 'member) => #f
+    12               (rember 'team '())  ;; (cdr lat) is empty list.
+    13               (null? '()) => #t => returns '()
+    14 
+    15  (rember 'team '()) => '()  ;; terminating condition
+    16  (rember 'team '(member) => '()
+    17  (rember 'team '(team member)) => '(member)
+    18  (rember 'team '(a team member)) => '(a member)
+    19  (rember 'team '(am a team member)) => '(am a member)
+    20  (rember 'team '(I am a team memeber)) => '(I am a membber)
+     
+     In other words, each successive recursive call returns a
+     replacement list for the input list.
+
+   #+end_src 
+
+
+   The above workout is good and I had to convince myself
+   with the power of recursion.  But the fact is that only
+   two lines (line number 8 and 12) are only correct.
+   Essentially it follows that the end product will be only
+   an empty list '().  Again this is my assumption after
+   reading the book again.
+
+   The book tells that the elements before the term matched
+   are left out and we have no mechanism to keep them
+   up. The book is trying to introduce *cons* in a different way. 
+
+   Understanding the above problem, I tried to execute my
+   code in *Dr. Racket*.
+   This is the output.
+   #+begin_src 
+   > (rember 'team '(I am a team memeber))
+   'I
+   #+end_src
+   
+   The output was a total surprise for me.  It is
+   neither empty list nor the list with (member) as I
+   expected.
+
+   I am yet to fix the bug in the above code.
+
+   I wrote another code exactly similar but with one
+   difference is replacing *'()* with *(quote ())* (as given
+   in the book).
+
+   The code as written in the "Dr. Racket IDE":
+   #+begin_src 
+    > (define eliminate
+        (lambda (a lat)
+          (cond
+            ((null? lat) (quote()))
+            (else (cond
+                    ((eq? a (car lat))(cdr lat))
+                    (else (eliminate a (cdr lat))))))))
+    > (eliminate 'team '(I am a team player))
+    '(player)
+    > (eliminate 'a '(I am a team player))
+    '(team player)
+    > (eliminate 'I '(I am a team player))
+    '(am a team player)
+    > 
+   #+end_src 
+
+And the  previous code is as in "Dr. Racket":
+   #+begin_src
+   > (define rember
+        (lambda (a lat)
+          (cond
+            ((null? lat) (quote ()))
+            (else
+            (cond (eq? a (car lat)) (cdr lat) 
+             (else (rember a (cdr lat))))))))
+   > (rember 'team '(I am a team player))
+   'I
+   > (rember 'a '(I am a team player))
+   'I
+   > (rember 'I '(I am a team player))
+   'I
+   > 
+   
+   #+end_src
+
+   The first code I have written and analyzed is a buggy one
+   becuase of paranthesis. ~(eq? a (car lat)) (cdr lst)~.
+   The ~<stmt>~ to be executed lies outside ~<condition
+   >~. The proper form is ~(<cond> <stmt>)~.  Hope, I won't
+   do this mistake again.
+   
+   The correct code is:
+   #+begin_src 
+   (define rember
+     (lambda (a lat)
+       (cond
+         ((null? lat) (quote ()))
+         (else (cond
+                 ((eq? a (car lat)) (cdr lat))
+                 (else (rember a (cdr lat))))))))
+   #+end_src
+
+   Now we will go for the cons function. The previous code
+   is fine but the problem is that atoms found before the
+   atom we want replace are left out.  The  final result
+   will have only atoms after that.
+
+   Examples:
+   #+begin_src 
+   (rember 'team '(I am a team player))
+   => '(player)
+   (rember 'am '(I am a team player))
+   => '(a team player)
+   #+end_src
+
+   Notice that the terms before the search terms are left
+   out. These has to be appended to the original list.  This
+   can be achieved by using *cons* construct.
+
+   Though I had some idea about *cons*, I was not very clear
+   about recursion. I was entering into endless loop.  The
+   reason is that my code is:
+   #+begin_src 
+   (define rember
+     (lambda (a lat)
+       (cond
+         ((null? lat) (quote ()))
+         (else (cond
+                 ((eq? a (car lat)) (cdr lat))
+                 (else (rember (cons (car lat) (cdr lat)))))))))  
+   #+end_src 
+   Notice that last line. 
+   
+   If *(car lat)* is not *a*, then I am recursively calling
+   *rember* with the element *(cons (car lat))* appended to
+   *(cdr lat)*.  So in case of *I am a team memebr*, since
+   *I* is not the term to be repalced (that is *team*), *I*
+   is appended to the list and hence becomes *I am a team
+   player*, instead of *am a team player*. Since, this is
+   happening recursively, the *list* will never become
+   *null* and will never get terminated.
+ 
+   Here is the final code.
+   #+begin_src 
+   (define rember
+     (lambda (a lat)
+       (cond
+         ((null? lat) (quote ()))
+         (else (cond
+                 ((eq? a (car lat)) (cdr lat))
+                 (else (cons (car lat) (rember a (cdr lat)))))))))  
+   #+end_src
+
+   In the above code, we can see the power of
+   *recursion*. Before appending *(car lat)*, we invoke
+   *(rember a (cdr last))* hence *(car lat)* waits until the
+   return value of last *(rember a (cdr lat))* which is
+   *(member)*. Then it reverts back to append each *atom* at
+   each stage of *back recursion*.
+
+   A quote from the book:
+   #+begin_quote
+   But since we don 't know the value of ( rember a ( cdr
+   lat) ) yet, we must find it before we can cons ( car
+   lat) onto it.
+
+   "The function rember checked each atom of the lat , one
+   at a time, to see if it was the same as the atom and. If
+   the car was not the same as the atom , we saved it to be
+   consed to the final value later. When rember found the
+   atom and, it dropped it, and consed the previous atoms
+   back onto the rest of the lat."
+   #+end_quote
+
+   We can actually remove two *cond* in the above code
+   (again from book) so that the code looks elegant.
+   #+begin_src 
+   (define rember
+     (lambda (a lat)
+       (cond
+         ((null? lat) (quote ()))
+         ((eq? a (car lat)) (cdr lat))
+         (else (cons (car lat) (rember a (cdr lat))))))))  
+   #+end_src
+
+   Essentially, *cond* can do for multiple checks. It is
+   checking for:
+   1. Whether the list is null, do something
+   2. Whether the atom is equal to search atom, do something
+   3. Else do something (recursively).
+
+   Moving on, the next problem is collect all the first
+   S-expressions from a list that consists of *only lists*.
+
+   We shall see an example (ofcourse, there are 3 differect
+   test cases):
+   #+begin_src 
+   Given Input:
+   ((one two) (three four) (five six))
+   Expected Output:
+   (one three five)
+   #+end_src
+
+   I wrote the program after little bit difficulty. However,
+   I got the answer. My code is:
+   #+begin_src 
+   (define firsts
+    (lambda (l)
+      (cond
+        ((null? l) (quote()))
+        (else (cons (car (car l)) (firsts (cdr l)))))))
+   #+end_src
+
+   Let me check the answer from the book. It is exactly same
+   as I have written but with more explanation.  That means
+   I can skip the next few pages.
+
+   The next problem is to repace an old atom with new atom
+   in a list.  Let me think.  See you tomorrow.
+
+** [2020-07-12 Sun]
+
+   It turned out to be too trivial.  I wrote the first
+   program to replace 'old with 'new in a "list".
+
+   The program is:
+   #+begin_src 
+   (define insertR1
+     (lambda (old new  lat)
+       (cond
+         ((null? lat) (quote ()))
+         (else (cond
+                 ((eq? old (car lat)) (cons new (cdr lat)))
+                 (else (cons (car lat) (insertR1 old new (cdr lat)))))))))
+   #+end_src
+
+   This will result in:
+   #+begin_src 
+   Given old = 'fudge, new = 'topping and 
+   lat = '(ice cream with fudge for dessert), the program
+   will give,
+   '(ice cream with topping for dessert)
+   #+end_src
+
+   The book wants also  the old character along with new
+   character.  I guess, that is why the name *insertR*.  The
+   new code is:
+   #+begin_src 
+   (define insertR
+     (lambda (old new  lat)
+       (cond
+         ((null? lat) (quote ()))
+         (else (cond
+                ((eq? old (car lat)) (cons old (cons new (cdr lat))))
+                (else (cons (car lat) (insertR old new (cdr lat)))))))))
+   #+end_src
+
+   This will result in:
+   #+begin_src 
+   Given old = 'fudge, new = 'topping and 
+   lat = '(ice cream with fudge for dessert), the program
+   will give,
+   '(ice cream with fudge topping for dessert)
+   #+end_src
+ 
+   The above code is fairly simple.  Or I am getting the
+   hang of lisp.
+
+   There are two more addition to this.  Inserting to the
+   left and substitution.  Substitution is trivial and the
+   code is exactly the same as *insertR1* shown above.
+
+
+   The left appending can be done in two ways:
+   #+begin_src 
+   (cons new (cons old (cdr lat)))
+   or
+   (cons new lat)
+   #+end_src  
+
+   The second one is more elegant and intutive.
+
+   There is a code substituting which we have done
+   already. There is a subst2 method which substitute a "new"
+   value for either the occurance of "old1" or "old2"
+   values. This fairly easy.  But a point to not that
+   comparison can be done in two ways.
+
+   #+begin_src 
+   ((eq? (car lat) o1 ) (cons new (cdr lat)))
+   ((eq? (car lat) o2) (cons new (cdr lat)))
+
+    or
+   
+   (or (eq? (car lat) o1 ) (eq? (car lat) o2))
+   #+end_src
+
+   The above is to illustrate the use of *or* in lisp.  What
+   we want to know is that, the same thing can be done by
+   using
+   #+begin_src 
+    (cond ((<test1>)(<ans1>))
+          ((<test2>)(<ans2>))
+          ((<test3>)(<ans3>))
+          (else <ans4>))
+   #+end_src
+
+   To put it in another way, *cond* responses to multiple
+   tests in a secquential fashion.  This is similar to
+   *swith-case* statements available in *c* or *Java*.
+
+   The code for *multirember* turned out to be very
+   simple. It is same code for *rember* but when the *atom*
+   is the one to be removed, we pass *(multirember a (cdr
+   lat))*. Here is the code:
+   #+begin_src 
+   (define multirember
+     (lambda (a lat)
+       (cond
+         ((null? lat) (quote ()))
+         (else (cond
+            ((eq? a (car lat)) (multirember a (cdr lat)))
+            (else (cons (car lat) (multirember a (cdr lat)))))))))
+   #+end_src
+
+   Added few more /primitive operations/ or /special forms/
+   while watching the [[https://www.youtube.com/watch?v=Kq-4nhIktes][vedio]] *"Scheme, Guile, and Racket: an
+   Introduction by Craig Maloney"*.
+
+   Keep an eye on this [[https://www.cs.utexas.edu/ftp/garbage/cs345/schintro-v14/schintro_143.html][website]]. It is from *University of taxas in
+   Austin*. Again, *scheme* in a differnet way.
+
+   The [[https://htdp.org/2018-01-06/]["How to Design Programs"]] is a good read.  But it is
+   only web based and currently 2nd edition is available,
+   which was released in 2018.
+
+   I had a bookmark in YouTube for [[https://www.youtube.com/user/cs5010/videos][CS510]] conducted by a
+   Proffesor teaching Racket.
+
+** [2020-07-13 Mon] (C-c !) Two versions of *multiinsertR*
+
+   *NOTE:* The discussion below is unnecessary. It was a
+   typo I had in the program which caused the prolem.
+
+   Yesterday, I was looking at *multiinsert*. Refer previous
+   section for *insertR* (insert the new atom to the  right
+   of the item we are searching for) and *multirember* for
+   removing multiple occurance of an 'atom' in a 'list'.
+
+   Based on these observations, I wrote *multinsertR*
+   assuming the same patterns.  I have two verions. The
+   reason for documenting these versions is that I am
+   getting weired results which are not at all acceptable.
+
+   Version 2 is obviously non-terminating recursion as
+   *multiinsert* is called again and again with newly
+   appended list which never terminates.  But Version 1 need
+   to be seen to figure out where the problem is.
+
+*** Version 1
+    This version is a blending of the preivious two methods.
+    #+begin_src 
+    (define multiinsertR
+      (lambda (old new  lat)
+        (cond
+          ((null? lat) (quote ()))
+           (else (cond
+              ((eq? old (car lat)) 
+                   (cons old (cons new 
+                         (multiinsertR old new (cdr lat)))))
+              (else (cons (car lat) 
+                    (insertR old new (cdr lat)))))))))
+    #+end_src
+
+    You can see the *typo* in the last line.  Instead of
+    calling *multiinsertR*, I am calling *insertR* which is
+    a previously defined function.  Obviously the result
+    will be unexpected.
+
+*** Version 2
+    This version doesn't require any discussion as the
+    'list' will never become '() and hence never terminate.
+
+    #+begin_src 
+    (define multiinsertR
+      (lambda (old new  lat)
+        (cond
+          ((null? lat) (quote ()))
+            (else (cond
+              ((eq? old (car lat)) 
+                 (multiinsertR old new 
+                    (cons old (cons new (cdr lat)))))
+              (else (cons (car lat) 
+                    (insertR old new (cdr lat)))))))))
+    #+end_src
+
+    The whole topic so far is useless, but for a beginner
+    these code will give more insight into recursive
+    functions.
+
+*** Version 3: At last the correct version.
+    Now for the correct one:
+    #+begin_src 
+    (define multiinsertR
+      (lambda (old new  lat)
+        (cond
+          ((null? lat) (quote ()))
+           (else (cond
+              ((eq? old (car lat)) 
+                   (cons old (cons new 
+                         (multiinsertR old new (cdr lat)))))
+              (else (cons (car lat) 
+                    (multiinsertR old new (cdr lat)))))))))
+    #+end_src
+
+*** Now for *multiiinsertL*.
+    I am copying the code from book.  It says it will never
+    terminate. 
+    #+begin_src 
+   (define multiinsertL
+      (lambda (new old lat)
+        (cond
+         ((null? lat) (quote ()))
+         (else
+          (cond
+           ((eq? old (car lat))
+            (cons new (cons old (multiinsertL new old lat))))
+           (else
+            (cons (car lat (multiinsertL new old (cdr lat))))))))))
+    #+end_src
+
+    And the way it is executed in Dr.Racket.
+    #+begin_src 
+    > (multiinsertR 'one 'ten l1)
+    '(one ten two one ten two one ten two)
+    > (load "/home/shree/scip/sicp/little-schemer.scm")
+    > (define l2 '(chips and fish or fish and fried))
+    > (multiinsertL 'fried 'fish l2)
+    
+    << infinte loop>>
+    #+end_src
+
+    So the task for the day is figure out why it is not
+    terminating (the obious answer is the 'list' is not
+    becoming null) and figure out how to overcome it.
+
+    Here we start tracing:
+    #+begin_src 
+    (define new 'fried)
+    (define old 'fish)
+    (define lat '(chips and fish or fish and fried))
+    ;; mil is short form for multiinsertL
+    (mil 'fried 'fish lat)
+    (?eq 'chips 'fish) =>#f
+    (cons 'chips (mil 'fried 'fish lat)
+    (?eq 'and 'fish) =>#f
+    (cons 'and (mil 'fried 'fish lat)
+    (?eq 'fish 'fish) => #t
+    (cons 'fried (cons 'fish (mil new old lat)))
+
+    <<
+    Yes, I understand.  At this step the value of lat is:
+    '(fish or fish and fried)
+    We are passing it again, and it matches with 'fish and
+    goes into infinite recursion.
+    >>
+    #+end_src
+
+    I gues, I found the reason for infinite recursion.  This
+    happens because
+    #+begin_src 
+    '(chips and fish ....
+    should give
+    '(chips and fried fish  ...
+    #+end_src
+    I guess, we can overcome this problem using (cdr (cdr
+    lat)).
+    Let me check.
+    This is my version of code.  To avoid fish, I am doing
+    two cdr to passing list.
+    #+begin_src 
+    (define multiinsertL
+     (lambda (new old lat)
+       (cond
+        ((null? lat) (quote ()))
+        (else
+         (cond
+          ((eq? old (car lat))
+           (cons new (cons old (multiinsertL new old (cdr (cdr lat))))))
+          (else
+           (cons (car lat) (multiinsertL new old (cdr lat)))))))))
+    #+end_src
+    And the output is:
+    #+begin_src 
+    > (multiinsertL new old lat)
+    '(chips and fried fish fried fish fried)
+    > lat
+    '(chips and fish or fish and fried)
+    #+end_src
+    Obviously my code is wrong as 'and' and 'or' are
+    ommitted.  We are close to the solution.
+
+    Is it possible to use 
+    #+begin_src 
+    (cons new (cons (multiinsertL new old (cdr lat)) old))
+    #+end_src
+
+    My second version is give below:
+    #+begin_src 
+    (define multiinsertL
+      (lambda (new old lat)
+        (cond
+         ((null? lat) (quote ()))
+         (else
+          (cond
+           ((eq? old (car lat))
+            (cons new (cons (multiinsertL new old (cdr lat)) old)))
+           (else
+            (cons (car lat) (multiinsertL new old (cdr lat)))))))))
+    
+    #+end_src
+    Yup.  I have modified.  Let's see the result.
+    #+begin_src 
+    > lat
+    '(chips and fish or fish and fried)
+    > (multiinsertL new old lat)
+    '(chips and fried (or fried (and fried) . fish) . fish)
+    #+end_src
+
+    Wonderful result. Though it is wrong, there are many
+    things to learn.  That's why I documented it.
+
+    Let's check to original version *insertL* before
+    replacing two 'cars' with a single 'cons'.
+    
+    Bringing the idea from eariler, we have
+    #+begin_src 
+    (cons new (cons old (cdr lat)))
+    or
+    (cons new lat)
+    #+end_src  
+
+    It worked.  And the final version is:
+    #+begin_src 
+    > (define multiinsertL
+        (lambda (new old lat)
+          (cond
+           ((null? lat) (quote ()))
+           (else
+            (cond
+             ((eq? old (car lat))
+              (cons new (cons old (multiinsertL new old (cdr lat)))))
+             (else
+              (cons (car lat) (multiinsertL new old (cdr lat)))))))))
+      > lat
+    '(chips and fish or fish and fried)
+    > (multiinsertL new old lat)
+    '(chips and fried fish or fried fish and fried)
+    #+end_src
+
+    Since reaching so far, *multisubst* becomes so trivial.
+    Here is the code:
+    #+begin_src 
+    (define multisubst
+      (lambda (new old lat)
+        (cond
+         ((null? lat) (quote ()))
+         (else
+          (cond
+           ((eq? old (car lat))
+            (cons new (multisubst new old (cdr lat))))
+           (else
+            (cons (car lat) (multisubst new old (cdr lat)))))))))
+    #+end_src
+*** Working with numbers (Chapter 4)
+    
+    It looks easy as numbers and their manipulation are done
+    by prefix notation.  I am comfertable with these.
+    #+begin_src 
+    (+ 3 5)
+    (* 3 (- 10 5)
+    etc.
+    #+end_src
+
+    But book starts this chapter slightly different.  They
+    define tuple as
+    #+begin_src 
+    '(1 2 3 4 5)
+    #+end_src
+    which is a list consisting of only numbers. If it has
+    another type of element like
+    #+begin_src 
+    '(1 2 3 cool 4 5)
+    #+end_src
+    it is no more tuple.
+
+    The ~(null? list)~ test instead returning an ~()~ or
+    empty list, returns 0. Hence the comparison operator is
+    written as:
+    #+begin_src 
+    ((null? lat) 0)
+    #+end_src
+
+    The first program is to add the elements in list or
+    tuple.
+    The code is trivial:
+    #+begin_src 
+    (define addtub
+      (lambda (lat)
+        (cond
+         ((null? lat) 0)
+         (else (+ (car lat) (addtub (cdr lat)))))))
+    #+end_src
+    And there is no need for explantion.
+
+    This chapter has *natural recursion* way. To understand
+    that we need a way add 1 and subtract 1 from a number.
+    This is trivial.  The way I have written is
+    #+begin_src 
+    ;; i++; lol         
+    (define (add1 x)
+      (+ x 1))
+    
+    ;; i--; lol
+    (define (sub1 x)
+      (- x 1))
+    #+end_src
+
+    The book has lambda notation inbuilt like previous
+    programs. 
+
+    They are:
+    #+begin_src 
+    (define add1
+       (lambda (n)
+          (+ n 1)))
+
+    (define sub1
+       (lambda (n)
+          (- n 1)))
+    #+end_src
+
+    These code are used for introducinng multiplication and
+    division recursively. We have m x n. One way  of
+    multiplying it is adding m to itself while n is reducing
+    to 0.  Hope, this will make you understand that how it
+    can be done. The code is:
+    #+begin_src 
+    (define multi
+      (lambda (m n)
+        (cond
+         ((zero? n) m)
+         (else (+ m (multi m (sub1 n)))))))
+    
+    #+end_src
+    I have goofed up somewhere.  I am not getting the
+    expected result. It is:
+    #+begin_src 
+    > (multi 3 2)
+    9
+    #+end_src
+
+    It is multiplying m to itself n times (m^n).  This is
+    power of m to n.  We need multiplication.
+
+    Ok. I understood the mistake.  I should return 0 when n
+    = 0, that means don't add it again.
+
+    Now the code looks like:
+    #+begin_src 
+    (define multi
+      (lambda (m n)
+        (cond
+         ((zero? n) 0)
+         (else (+ m (multi m (sub1 n)))))))
+    #+end_src
+
+    Knowing this division will be similar.
+    
+    I think I am loosing interst and almost all the problems
+    are similar and using *natural recursion*.  I have
+    enough of it.  May be go through the book and document
+    if anything difficult is found.
+
+    There are two similar examples.  The first one, I am
+    just typing as they have given, while the second one, I
+    am going to try.
+
+    First one is to find the length of a tuple.
+
+    #+begin_src 
+    (define length
+      (lambda (lat)
+        (cond
+         ((null? lat) 0)
+         (else (add1 (length (cdr lat)))))))
+    #+end_src
+
+    No discussion on the above code as it is self
+    explantory. I want to add one point here.
+    #+begin_src 
+    in mit-scheme
+    (define l '(1 2 3 4 5))
+    in racket and lisp
+    (define l (list 1 2 3 4 5))
+    #+end_src
+
+    The second one to tell the position of an atom in the
+    list.
+    Given a list with ~(Mary had a little lamp)~ and asking
+    for ~little~, the function should return 4.
+
+    Here is my try:
+    #+begin_src 
+    (define position
+      (lambda (x lat)
+        (cond
+         ((null? lat) 0)
+         ((eq? x (car lat)) (add1 0))
+          (else (add1 (position x (cdr lat)))))))
+    #+end_src
+
+    Surprisingly this program works. The only error is that
+    if the 'atom is not in the 'list, it will return max
+    value.  You can refer to the below snippet.
+
+    #+begin_src 
+    > ml
+    '(mary had a little lamp)
+    > (positon 'marry ml)
+    5
+    > (postion 'mary ml)
+    1
+    #+end_src
+
+    Let's see how the book is solving the problem.  It is
+    accepting another parameter for *pick*. That is *n*,
+    which gives the position.
+
+    I guess, I misunderstood the problem.  The *pick* is
+    essentially to return the atom at that position. So I am
+    renaming my code in the previous example.
+
+    Now restating the problem, given ~(mary had a little
+    lamp)~ and ~n = 4~, the function should return ~little~.
+
+    Here is code written by before seeing the book.
+    #+begin_src 
+    (define pick
+      (lambda (n lat)
+        (cond
+         ((null? lat) 0)
+         ((eq? 1 n) (car lat))
+         (else (pick (sub1 n) (cdr lat))))))
+    #+end_src
+    and the output is:
+    #+begin_src 
+    > ml
+    '(mary had a little lamp)
+    > (pick 2 ml)
+    'had
+    > (pick 6 ml) ;; out of bound
+    0
+    #+end_src
+
+    The code in the book is slightly differnt:
+    #+begin_src 
+    (define pick
+       (lambda ( n lat)
+          (cond
+            ((zero ? (sub1 n)) (car lat) )
+            (else (pick (sub1 n) (cdr lat))))))
+    #+end_src
+
+    It looks slightly elegant by using ~(zero? (sub1 n))~
+    construct instead of ~(eq? 1 n)~ construct. I agree.
+    One of the 10 comandments is test ~(null? lat)~ for
+    lists and test ~(zero? num)~ for numbers.
+
+    So, I have written two functions purely by me. The first
+    one is my invention.  If it is there in the book at a
+    latter point of time, it will document it just for
+    comparing with my code.
+
+    There are few more assignment is *numbers* before going
+    to next chapter.
+** [2020-07-14 Tue] Continuing with numbers
+*** More and more numbers
+   Continuing with *pick*, we are going to write *rempick*,
+   which stands for removing the picked element from the
+   list.
+   Example:
+   #+begin_src 
+   lat = (hotdogs with hot mustard)
+   n = 3
+   (rempick n lat) => (hotdogs with mustard)
+
+   #+end_src
+
+   I guess, I can modifiy my *pick* code.
+   #+begin_src 
+    (define rempick
+       (lambda ( n lat)
+         (cond
+            ((null? lat) (quote ()))
+            ((zero? (sub1 n)) (rempick n (cdr lat)) )
+            (else (cons (car lat) (rempick (sub1 n) (cdr lat)))))))
+    
+   #+end_src
+
+   According to my logic:
+   1. Check the element. If it is not in the position
+      a. Cons it to the list
+      b. Recursively call the *rempick* with (cdr lat)
+   2. If the  element is in the position
+      a. recursively call with (cdr lat)
+   3. If the list is empty return '().
+
+   But the output is:
+   #+begin_src 
+    > lat
+    '(hotdogs with hot mustard)
+    > (rempick 4 lat)
+    '(hotdogs with hot)
+    > (rempick 3 lat)
+    '(hotdogs with)
+    > (rempick 2 lat)
+    '(hotdogs)
+    > 
+   #+end_src
+
+   This shows clearly we are eliminating the tail part after
+   the position.
+
+   I have found the solution in two iterations. The first
+   one returning 'lat' when the element to be removed is
+   found and the second one returning the '(cdr lat)' when
+   the element is to be found.
+
+   Note, as in the previous code, we are not recursively
+   calling ~(rempick n (cdr lat))~.
+
+   I am copying my work as I did it in Racket IDE here. You
+   can identify the mistake and see the results of that
+   mistake.  
+   #+begin_src
+    > ;; version 1 (returning lat)
+    > (define rempick
+       (lambda ( n lat)
+         (cond
+            ((null? lat) (quote ()))
+            ((zero? (sub1 n)) lat )
+            (else (cons (car lat) (rempick (sub1 n) (cdr lat)))))))
+    
+    > lat
+    '(hotdogs with hot mustard)
+    > (rempick 3 lat)
+    '(hotdogs with hot mustard)
+    > (rempick 2 lat)
+    '(hotdogs with hot mustard)
+    > (rempick 1 lat)
+    '(hotdogs with hot mustard)
+
+    ;; version 2 (returning (cdr lat)
+    > (define rempick
+       (lambda ( n lat)
+         (cond
+            ((null? lat) (quote ()))
+            ((zero? (sub1 n)) (cdr lat) )
+            (else (cons (car lat) (rempick (sub1 n) (cdr lat)))))))
+    
+    > lat
+    '(hotdogs with hot mustard)
+    > (rempick 3 lat)
+    '(hotdogs with mustard)
+    > (rempick 2 lat)
+    '(hotdogs hot mustard)
+    > (rempick 1 lat)
+    '(with hot mustard)
+    > 
+   #+end_src  
+
+   There is a program to find whether the given atom is a
+   number or not. This method ~(number? x)~ is already
+   available with *scheme*.  However, even if it is not
+   there, we can write it as scheme gives opportunity.  How?
+
+   I write my own version.
+
+   My version is:
+   #+begin_src 
+   (define mynum
+     (lambda (x)
+       (cond
+          ((and (atom? x) (not (string? x))) #t)
+          (else #f))))
+   #+end_src
+
+   It is a very trivial program, but not that I am using
+   another primitive ~(string? x)~.
+
+   The book says we cannot write ~(number? x)~ as it a
+   primitive function like ~(atom? x), (null? x) (cons x
+   lat)~ etc. 
+
+   The function *no-num* returns a list without numbers when
+   given a list mixed with numbers and strings.
+
+   I think no need to write this function, as it is very
+   similar to previous one we did.  In that function, we
+   removed the element at the position n.  Here we need to
+   check each element whether it is a number or not.  If it
+   is a number, skip it with simply (cdr lat).  It will do
+   the things.
+
+   I guess all the other functions are a kind of similarity.
+
+   1. Function ~(all-nums lat)~ returns only numbers instead
+      of strings.
+   2. Function ~(eqan a1 a2)~ returns true if both the atoms
+      are same.  In case of number we check with ~(= a1 a2)~
+      and in case of strings we check with ~(?eq a1 a2)~.
+   3. Function ~(occur a lat)~ returns the number of times
+      ~a~ occuring in ~lat~. This is a mixture of ~position~
+      and ~rempick~ in a slightly different way.
+   4. Function ~(rempick n lat)~ can be rewritten by using
+      ~(one? x)~ question instead of ~(zero? x)~.  Remember
+      we have solved the ~position~ problem using 1 first and then
+      looked in to the book to see that it can be solved by
+      using 0.  The same has been repeated here.
+ 
+*** "Oh My Gwad", (Chapater 6)
+    This chapter deals with special notation '*',
+    representing 'all'.  For example, our first method is
+    ~(rember* a lat)~ means remove all occurances of *a* in
+    *lat*. 
+
+    As usual we will try our hand (many times) and if there
+    is no other way, we will look into the book.
+
+    In lisp fashion,
+    #+begin_src 
+    (cond
+       ((ans? (try method)) (write answer))
+       ((?not-satisfied) (try another method))
+       (else (look into book)))
+    #+end_src
+
+    Here goes my program. That also tells that I am yet
+    become strong.  The code is:
+    #+begin_src 
+    (define rember*
+      (lambda (x lat)
+        (cond
+         ((null? lat) (quote ()))
+         ((eq? (car lat))(rember* x (cdr lat)))
+         (else (cons (car lat) (rember* x (cdr lat)))))))
+    #+end_src
+
+    And the output in racket is:
+    #+begin_src 
+    > (define lat '((coffee) cup ((tea) cup) (and (hick)) cup))
+    > (define x 'cup)
+    > (rember* x lat)
+    '((coffee) ((tea) cup) (and (hick)))    
+    #+end_src
+
+    What mistake we have done? The only mistake, I guess is
+    we are not going into the list within lists.
+
+    I have modified my program at least twice, and it looks
+    like this now:
+    #+begin_src 
+    (define rember*
+      (lambda (x lat)
+        (cond
+         ((null? lat) (quote ()))
+         ((lat? (car lat)) (rember* x (car lat)))
+         ((lat? (cdr lat)) (rember* x (cdr lat)))
+         ((eq? x (car lat)) (rember* x (cdr lat)))
+         (else (cons (car lat) (rember* x (cdr lat)))))))
+    
+    #+end_src
+
+    I did a small change in program by replacing the first
+    *lat* condition namely ~((lat? (car lat)) (rember* x car
+    lat))~ to ~((pair? (car lat)) (car lat) (rember* x (cdr
+    lat)))~.
+
+    So some points here from my *trails* in the Racket IDE.
+   
+    1. *(lat? lat)* (the program we have writen earlier)
+       will check only a list with atoms and not with list
+       with lists.
+       #+begin_src
+       Examples: 
+       (lat? '(1 2 3 4)) => #t
+       (lat? '(1 (2 3) 4) => #f
+       #+end_src
+
+       (Note: We used ~lat?~ in *multirember* function.  In
+       that case, we had only multiple atoms in the list.
+       In case of *rember**, we need to check whether the
+       atom is present inside a list of a given list).
+
+    2. *(pair? lat)* (built-in primitive) checks whether an
+       element is a list even with one element.
+       #+begin_src  
+       Examples:
+       (pair? '((coffee))) => #t
+       (pair? '(coffee)) => #t
+       (pair? 'coffee) => #f
+       #+end_src
+
+    So, roughly writing the pseudo code:
+    #+begin_src 
+    > (cdr lat)
+    '(cup ((tea) cup) (and (hick)) cup)
+    > (pair? (cdr lat))
+    #t
+    > (lat? (cdr lat))
+    #f
+    > (pair? (car lat))
+    #t
+    > (lat? (car lat))
+    #t
+    #+end_src
+
+*** B.Tech. CSE SICP Syllabus
+    Unit 1
+    
+    Introduction to LISP and Scheme Building abstractions with
+    procedures: Elements of programmingprocedures and processes
+    they generate Formulating abstracts with higher-order
+    procedures.
+    
+    Unit 2
+    
+    Building abstractions with data: Introduction to data
+    abstraction Hierarchical data and the closure
+    property Symbolic data Multiple representations for abstract
+    data Systems with generticoperations.
+    
+    Unit3
+    
+    Modularity, object and state: Assignment and local
+    state Environment model of evaluation Modeling with mutable
+    data Concurrency Streams
+
+*** Some web sites to watch
+    [[https://www.youtube.com/watch?v=NdIXQK07nvY][Introduction to Common Lisp (Lecture 2; August 30, 2017)]]
+    in YouTube. (INF4820 Algorithms for Artificial
+    Intelligence and Natual Language Processing.  The below
+    is the course website.
+
+    [[https://www.uio.no/studier/emner/matnat/ifi/nedlagte-emner/INF4820/index-eng.html][INF4820   Algorithms for artificial intelligence]]
+
+    [[https://www.uio.no/studier/emner/matnat/ifi/nedlagte-emner/INF4820/h17/exercises/][AI Exercises]] from University of Oslo (this link can be
+    reached from the previous link).  The course is
+    discontinued but the website is available.
+
+** [2020-07-15 Wed] Continuing wih previous problem
+    I think, I am stopping for now. See you tomorrow with
+    the same problem - with fresh mind.
+    To be frank, I didn't do much today.  Just now I
+    started. I need to workout something and figure out a
+    way.
+  
+    Let me start:
+    #+begin_src 
+    > x
+    'cup
+    > lat
+    '((coffee) cup ((tea) cup) (and (hick)) cup)
+    #+end_src
+
+    The main problem is to *remove* all the *occurances* of
+    *cup*. The function name is *rember** (please refer
+    above for some more experiments).
+
+    I am planning to go step by step, thought the answer is
+    readily available in the book.
+    #+begin_src 
+    > x
+    'cup
+    > lat
+    '((coffee) cup ((tea) cup) (and (hick)) cup)
+    
+    #+end_src
+
+    Each element in the list are:
+    #+begin_src 
+    > (car lat)
+    '(coffee)
+    > (car (cdr lat))
+    'cup
+    > (car (cdr (cdr lat)))
+    '((tea) cup)
+    > (car (cdr (cdr (cdr lat))))
+    '(and (hick))
+    > (car (cdr (cdr (cdr (cdr lat)))))
+    'cup
+    
+    #+end_src
+
+    Given ~(car lat) => '(coffee)~, the following is the
+    result. 
+
+    #+begin_src 
+    > (pair? (car lat))
+    #t
+    > (lat? (car lat))
+    #t
+    > (atom? (car lat))
+    #f
+    #+end_src
+
+    The observations are:
+    1. If an atom is enclosed in (), it is a pair.
+    2. If an atom is enclosed in (), it is also a pair.
+    3. If an atom is enclosed in (), it is NOT an atom.
+
+    Feeling sleepy.
+
+** [2020-07-16 Thu] Continuing with recursion
+*** Few Experiments
+    The following program returns the  lists present inside
+    a list.
+    #+begin_src 
+    > (define f
+        (lambda (lat)
+          (cond
+            ((null? lat) (quote ()))
+            ((pair? (car lat)) (cons (car lat) (f (cdr lat))))
+            (else (f (cdr lat))))))
+    > (f lat)
+    '((coffee) ((tea) cup) (and (hick)))
+    #+end_src
+
+    The following program returns *only* atoms present in a
+    mixed list (lists and atoms within a list).
+    #+begin_src 
+    > (define f
+        (lambda (lat)
+          (cond
+            ((null? lat) (quote ()))
+            ((atom? (car lat)) (cons (car lat) (f (cdr lat))))
+            (else (f (cdr lat))))))
+    > (f lat)
+    '(cup cup)
+    #+end_src
+
+    Now we try with *lat*  function.
+
+    #+begin_src 
+    > (f lat)
+    scip/sicp/little-schemer.scm:34:13: car: contract violation
+    expected: pair?
+    given: 'cup
+    #+end_src
+
+    The *lat* function is used to find only a list
+    consisting of *atoms*.
+
+    In this case, since we have mix of *atoms* and *lists*
+    we cannot use the *lat*. It throws an error when
+    encountering an *atom*. Because for an atom, we don't
+    have *(car lat)*.  (car lat) can be used only in the
+    following scenerios.
+
+    #+begin_src 
+    (car '( one two)) = > one
+    (car '((one)) => (one)
+    (car '(one)) => one
+    (car 'one) => ERROR
+    #+end_src  
+
+    So we need go work with only *pair?* and *atom?*.
+    Dummy
+    ((coffee) 
+     (cup ((tea) cup) (and (hick)) cup) 
+     ((tea) cup) 
+     (and (hick)) 
+     (cup))
+
+    I am yet to solve the problem.  Until then, I am not
+    going to come here.
+
+
+** [2020-07-17 Fri]
+*** Finally I gave up
+    I was working on the problem yesterday, and found that
+    the answer is trivial. It is:
+    #+begin_src 
+    (define lat '((coffee) cup ((tea) cup) (and (hick)) cup))
+    > (define f
+        (lambda (lat)
+          (cond
+            ((null? lat) (quote ()))
+            ((atom? (car lat)) (cons (car lat) (f (cdr lat))))
+            (else (cons (f (car lat)) (f (cdr lat)))))))
+    > (f lat)
+    '((coffee) cup ((tea) cup) (and (hick)) cup)
+    #+end_src
+
+    In the example given in the book, we need to eliminate
+    an atom namely *'cup*, from the list. To do so, after
+    the condition ~((atom? (car lat))~ we need to add:
+    #+begin_src 
+    (cond
+       ((eq? x lat) (f (cdr lat)))
+       (else (cons (car lat) (f cdr lat))))
+    #+end_src
+
+    This will remove the atom *'cup* from the list.  But, I
+    felt my problem is a better one.  That is converting a
+    list of S-expressions (namely list of lists) into a
+    single list of atoms (namely list of atoms) which can be
+    tested by (lat? ...) construct.
+
+    I have asked this problem in StackOverflow.  
+
+    By knowing this, I guess we can skip the remaining
+    chapter.
+
+    The problems include *insertR*, *insrtL*, *occur* etc.
+    All these problems are minor varient of the same.  So, I
+    am skipping this chaper.
+
+*** Thinking of winding up
+    I guess, I can wind up *Little Schemer* and can come
+    back whenever I have doubt.  The rest of the chapter are
+    some what similar till now and if there is any
+    interesting problems while browsing, I shall document.
+    Well! before winding up, I thought of documenting two
+    things.
+
+    One is the stack overflow answers I got for my
+    problem. And the other is remaining problems in the
+    book.  If I feel like solving them, I will do that also.
+
+*** Stack Over Flow Solutions.
+**** Answer 1
+
+    You just need to replace the last cons with append, to
+    flatten the sublists:
+    #+begin_src 
+    (define f
+      (lambda (lat)
+        (cond
+          ((null? lat) (quote ()))
+          ((atom? (car lat)) (cons (car lat) (f (cdr lat))))
+          (else (append (f (car lat)) (f (cdr lat)))))))
+    
+    #+end_src
+
+    append already is a built-in primitive, but it's simple
+    to implement in terms of the primitive procedures you
+    mentioned, if you want to (not recommended, of course:
+    just use the built-in!).
+    #+begin_src 
+    (define (append l1 l2)
+      (cond ((null? l1) l2)
+            ((null? l2) l1)
+            (else (cons (car l1) (append (cdr l1) l2)))))
+    
+    #+end_src
+
+    Now it works as expected:
+    #+begin_src 
+    (f '((coffee) cup ((tea) cup) (and (hick)) cup))
+    => '(coffee cup tea cup and hick cup)
+    
+    #+end_src
+
+    FYI, the procedure you were trying to implement is
+    called flatten and is pretty common, and some Scheme
+    flavors (Racket, for example) already include it. In
+    real life, what you'd do is:
+    #+begin_src 
+    (flatten '((coffee) cup ((tea) cup) (and (hick)) cup))
+    => '(coffee cup tea cup and hick cup)
+    
+    #+end_src
+
+**** Answer 2
+
+    This seems to be close to the standard flatten function
+    that everyone wants to write at some point. I always
+    like to see how these can be written without copping out
+    by using append using the nice trick (I think) of having
+    an agenda. The following does this: note this is
+    probably specific to Racket.
+
+    #+begin_src 
+    (define (tree->atoms tree)
+      (define atom?
+        ;; Something is an atom if it is not a cons
+        (compose not cons?))
+      (define (rev thing)
+        ;; this is just reverse
+        (let rev-loop ([rt thing] [rrt '()])
+          (if (null? rt)
+              rrt
+              (rev-loop (rest rt) (cons (first rt) rrt)))))
+      (let tree->atoms-loop ([it tree]
+                             [agenda '()]
+                             [results '()])
+        (cond [(null? it)
+               ;; no more left
+               (if (null? agenda)
+                   ;; no more agenda: we're done, so reverse
+                   ;; the results and return that
+                   (rev results)
+                   ;; more agenda, so carry on
+                   (tree->atoms-loop (first agenda)
+                                     (rest agenda)
+                                     results))]
+              [(atom? it)
+               ;; we've found an atom which is not ()
+               (if (null? agenda)
+                   ;; we're done
+                   (rev (cons it results))
+                   ;; there is more
+                   (tree->atoms-loop (first agenda)
+                                     (rest agenda)
+                                     (cons it results)))]
+              [else
+               ;; cons: look at the car, and stuff the cdr 
+               ;; onto the agenda
+               (tree->atoms-loop (car it)
+                                 (cons (cdr it) agenda)
+                                 results)])))
+        #+end_src
+
+    Both the answers are brilliant.  And it remainds me that
+    I have to oil my brain much more.
+
+*** Remaining Problems
+**** 
+* Some pointers
+  [[https://www.scheme.com/tspl4/][The Scheme Programming Language 4th Ed. (TSPL4)]]
+  Lots of exercise are here to use.

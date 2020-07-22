@@ -1,0 +1,4 @@
+# all files related to pdf generation
+*.bbl
+*.dvi
+*.tex

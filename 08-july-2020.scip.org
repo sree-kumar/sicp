@@ -1,0 +1,274 @@
+#+TITLE: The way I understood Lisp.
+#+AUTHOR: R.Sreekumar, Ph.D.
+#+EMAIL: sreekumar@am.amrita.edu
+#+LaTeX_HEADER: \usepackage{charter}
+#+OPTIONS: toc:nil
+
+* Introduction:
+  These are the notes taken by me attending the classes
+  given by the authors of SICP during 1986.  
+
+  Lisp is a powerful language to express things.  It uses
+  functional  programming techniques and the gap between
+  data and procedure are thin. This paves way for higher
+  order function, immutability and purity.
+
+  There are umpteen number of videos expressing this idea in
+  modering programming languages like Scala and Clojure.
+  JavaScript has also  become functional programming
+  languages.
+
+* Elements of Programming
+
+  Three major elements of any powerful programming language are:
+  1. *Primitive Expressions*, which represent the simplest
+     entities the language is concerned with
+  2. *means of compination* by which the compound elements
+     are built from the simpler ones
+  3. *means of abstraction* by which compound elements can
+     be named and manipulated as units.
+
+*** Expressions
+ 
+  One way to get started is to  type *=expression=* and the
+  interpreter evaluates that expression.  Expression can be
+  a data or procedure.  Data is the  "stuff" we want to
+  manipulate and procedure are the rules for manipulation.
+
+  #+begin_src scheme :exports both
+  134
+
+  #+end_src
+
+  #+RESULTS:
+  : 134
+     
+  Numbers are primitive expressions.
+
+  Expressions representing numbers may be compined with
+  expressions representing primitive procedures (arithematic
+  operators like +, -, *, /) to form a compound expressions.
+
+  #+begin_src scheme :exports both
+  (* 3 2)
+  #+end_src
+
+  #+RESULTS:
+  : 6
+  
+  Some of the sample expressions are:
+  #+begin_src scheme
+  (+ 2.7 10)
+  12.7
+  (- 1000 334)
+  666
+  (/ 10 5)
+  2
+  (/ 11 5)
+  11/5
+  (/ 11.0 5)
+  2.2
+  (+ 2 3 4 5)
+  14
+  (+ (* 3 5) (- 10 6))
+  19
+  #+end_src
+
+  #+RESULTS:
+  : 19
+
+#+LATEX: \bigskip
+#+LATEX:  \hrule
+  #+begin_quote
+  /Note:/ This is from Wikipedia.
+  #+begin_src scheme :exports both
+  (define (make-counder value)
+      (lambda () (set! value (+ value 1)) value))
+  (define c (make-counter 10))
+  (c)
+  #+end_src
+
+  Actually, the function ~(c)~ should provide the incremental
+  value of 10, that is 11.  It is working on =mit-scheme=.
+  This is known as *functor* in lisp/scheme.  In lisp, it is
+  bit more complicated.
+  #+end_quote
+
+#+LATEX:  \hrule \bigskip
+
+
+  I am going to write a program, to compute
+#+LATEX: x^y.
+  
+  #+begin_src scheme :exports both
+  (define (pow x y)
+      (if (= y 1) x 
+          (* x (pow x (- y 1)))))
+  (pow 12 12)
+  #+end_src
+
+  #+RESULTS:
+  : 8916100448256
+
+
+  This program was written for two purposes. To find whether
+  my scheme knowledge is rusted and to see how much  big
+  number my system can compute.  Second one was  easy, as I
+  got a  very big number.
+
+  First one was difficult, I have to do it atleast 5 times.
+
+#+LATEX: \bigskip \hrule \bigskip  
+
+  This problem is taken from [[https://www2.cs.sfu.ca/CourseCentral/310/pwfong/Lisp/1/tutorial1.html][Basic LISP Programming]].
+
+  The N'th triangular number is defined to be 1 + 2 + 3 +
+  ... + N. Alternatively, we could give a recursive
+  definition of triangular number as follows: 
+
+  T(n) = 1 if n = 1 \\
+  T(n) = n + T(n-1) if n > 1 
+
+  Use the recursive definition to help you implement a
+  linearly recursive function (triangular N) that returns
+  the N'th triangular number. Enter your function definition
+  into a text file. Then load it into LISP. Trace the
+  execution of (triangular 6).
+
+  #+begin_src scheme :exports both
+  (define (triangular n)
+     (if (= n 1) 1
+         (+ n (triangular (- n 1)))))
+  (triangular 3)
+  #+end_src
+
+  #+RESULTS:
+  : 6
+
+  This happened to be a trivial problem because I struggled
+  yesterday.
+
+#+LATEX: \bigskip \hrule \bigskip
+
+  I am trying another trick today. How to print output. This
+  is from a lisp book.
+
+  #+begin_src scheme :exports both
+  (display "Hello World")
+  #+end_src
+
+  #+RESULTS:
+  : #<unspecified>
+ 
+  In orgmode, I am getting this  result. Actually the code
+  is correct  and will display "Hello World".  But the
+  problem is the last output from the program is
+  =#<unspecified>=. So, it is printed.  The same is given in
+  MIT course note for Scheme programming.
+
+  There is one Emacs StackExchange question for the same but
+  there is no answer. I have to find out.
+
+  Here is another code from the great *Kitchen*.
+
+  #+begin_src scheme :results output
+  (current-time-string)
+  #+end_src
+
+  #+RESULTS:
+  : <unnamed port>:5:0: <unnamed port>:5:0: In procedure module-lookup: Unbound variable: current-time-string
+  : 
+  : Entering a new prompt.  Type `,bt' for a backtrace or `,q' to continue.
+  : scheme@(guile-user) [1]> 
+
+  /Note:/ This will not work.  This macro is part of Emacs
+  Lisp.
+
+  The following is the example.
+
+  #+begin_src emacs-lisp :exports both
+  (current-time-string)
+  #+end_src
+
+  #+RESULTS:
+  : Mon Jun  8 16:34:55 2020
+
+  I am trying the previous scheme code ~display~ method, to
+  see how it works after seeing the documentation of
+  ~org-babel~ availabe as =read-docs= format. It says, when
+  we tell ~:results raw~ it may show some improvement.
+
+  #+begin_src scheme :results raw
+  (display "hello World")
+  #+end_src
+
+  #+RESULTS:
+  #<unspecified>
+
+  No this is also not working.
+
+  I tried it in *guile* REPL. It is working fine.  Let me
+  change the configuration in my ~.emacs~ file to guile.
+
+  No, I didn't change.  It is already guile.
+
+  ~(setq geiser-default-implementation 'guile)~
+
+  Error message is coming. So commenting the above.  
+
+  #+begin_src scheme :var number=9 :scheme guile
+  (+ number 0)
+  #+end_src
+
+  #+RESULTS:
+  : 9
+
+  #+BEGIN_SRC scheme :exports both :results output
+  (display "Hello Scheme in OrgMode")
+
+  #+END_SRC
+
+  #+RESULTS:
+  : Hello Scheme in OrgMode
+
+  The above code is working.  That means I have to add:
+
+  ~scheme :exports results :results output~
+
+  I got an answer for returning multiple executions in guile
+  and geiser environement.  The following code explains
+  itself.
+
+  #+begin_src scheme :exports both :results list
+  (list
+     (* 1 1)
+     (* 2 2)
+     (* 3 3))
+  #+end_src
+
+  #+RESULTS:
+  - 1
+  - 4
+  - 9
+
+  It looks great.  Notice that the output is not informing
+  about the header for bigin-src.  They are slightly
+  changing.
+  ~<+begin_src scheme :exports both :results list~.
+
+  I am going to write my prime program. A prime number is
+  the one which  can divided by only 1. 
+
+  #+begin_src scheme :exports both
+  (remainder 11 5)
+  #+end_src
+
+  #+RESULTS:
+  : 1
+
+  Looks tricky.  Incompelete program.
+  
+* Starting from the beinning (08-July-2020)
+
+** Primitive Expressions
+   Expressions representing numbers may be combined wi

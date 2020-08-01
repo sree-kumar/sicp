@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+ \PYG{p}{(}\PYG{k}{define }\PYG{p}{(}\PYG{n+nf}{absolute} \PYG{n+nv}{x}\PYG{p}{)}
+    \PYG{p}{(}\PYG{k}{cond }\PYG{p}{((}\PYG{n+nb}{\PYGZgt{} }\PYG{n+nv}{x} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{n+nv}{x}\PYG{p}{)}
+          \PYG{p}{((}\PYG{n+nb}{= }\PYG{n+nv}{x} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{l+m+mi}{0}\PYG{p}{)}
+          \PYG{p}{((}\PYG{n+nb}{\PYGZlt{} }\PYG{n+nv}{x} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{p}{(}\PYG{n+nb}{\PYGZhy{} }\PYG{n+nv}{x}\PYG{p}{))))}
+\PYG{n+nv}{\PYGZgt{}} \PYG{p}{(}\PYG{n+nf}{absolute} \PYG{l+m+mi}{\PYGZhy{}3}\PYG{p}{)}
+  \PYG{l+m+mi}{3}
+\end{Verbatim}

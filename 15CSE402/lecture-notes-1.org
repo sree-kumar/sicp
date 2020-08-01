@@ -1,0 +1,89 @@
+#+TITLE: Introduction
+#+SUBTITLE: 15CSE220 :: SICP
+#+AUTHOR: R.Sreekumar, Ph.D.
+#+EMAIL: sreekumar@am.amrita.edu
+#+LaTeX_HEADER: \usepackage{charter}
+#+OPTIONS: toc:nil
+* SICP
+  #+begin_quote
+  What can be said about it that hasn t been said a thousand
+  times before? It is perhaps the single greatest computer
+  science textbook.
+  #+end_quote
+
+* Computational Process
+  #+begin_quote
+    "I think it is extraordinarily import that we in
+    computer science keep fun in computing."
+    -- Alan J Perils
+  #+end_quote
+
+  Computer programming is fun. We discover every day.  We
+  are not satisfied at any time.  That's why we have so many
+  languages, libraries, APIs.
+
+  But often computer programming is related knowing a
+  programming language by its syntax.  When we tell we are
+  expert in one programming language, we mean that we are
+  master in its syntax.
+
+  We never thought about why there is syntax in its first
+  place and what is the reason for that?
+
+  We never spent time in understanding a language
+  specification. 
+
+  We are always in the problem solving mind set and when
+  given a problem, we think how to solve it using the tools
+  (i.e. the programming language, its libraries and APIs).
+
+  This course is addressing this fundamental issue.  
+
+  #+begin_quote
+  "We are about to study the idea of /computational process/.
+  #+end_quote
+
+  /Process/ manipulate /data/ and is directed by a pattern
+  of rules called /program/.
+
+  This is important because without knowing process, we
+  cannot manipulate data and therefor we cannot write a
+  program.
+
+  One way to understand process is to know how a procedure
+  is executed in an environment. For example we may know
+  that the following snippet iterates 10 times,
+  #+begin_src Java
+  for(int i = 0; i < 10; i++){
+     // do some work;
+  }
+  #+end_src
+  but we really don't know how this procedure is executed
+  inside the computer, that is the process.
+
+  In this course we are going to learn about procedures,
+  data they manipulate and the process involed.
+
+* LISP
+
+  Just as:
+  - our everyday thouhts are expressed by natural languages,
+  - descriptions and quantitative phenomena are expressed by
+    mathamatial notations,
+
+  *Our procedural thoughts will be expressed in Lisp.*
+
+* Why Lisp?
+
+  If Lisp is not a mainstream language, why are we using it
+  as the framework for our discussion of programming?
+  Because the language possesses unique features that make
+  it an excellent medium for studying important programming
+  constructs and data structures and for relating them to
+  the linguistic features that support them.
+
+  - Lisp descriptions of processes are called /procedures/.
+  - Procedures can themsleves can be manipulated as /data/.
+
+
+

@@ -1,0 +1,271 @@
+#+TITLE: Our Programming Language
+#+SUBTITLE: 15CSE220 :: SICP
+#+AUTHOR: R.Sreekumar, Ph.D.
+#+EMAIL: sreekumar@am.amrita.edu
+#+LaTeX_HEADER: \usepackage{charter}
+#+LaTeX_HEADER: \usepackage{minted}
+#+OPTIONS: toc:nil
+
+* Expressions
+  Expressions are the basic building blocks. You can type
+  expressions in the REPL, the expression is evaluated and
+  the result is printed.
+  #+ATTR_LATEX: :options frame=single  
+  #+begin_src scheme
+  > 142
+  142
+  > 
+  #+end_src
+  In this case, '142' is an symbol or primitive expression
+  that consists of numerals which represent the number 142
+  in base 10. 
+
+  Expressions can be anything, but the interpreter must know
+  how to evaluate it.
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme
+   > something
+   . . something: undefined;
+    cannot reference undefined identifier
+   > 
+  #+end_src
+  If the interpreter cannot identify an expression (or
+  symbol) it throws an error.  Otherwise, 'something' is a
+  valid expression if we provide a meaning for them.
+
+* Combining expressions
+  Expressions representing numbers can be combined with a
+  primitive expression (or procedure) such as +, /, * to get
+  a combound expression.
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme 
+> (+ 34 65)
+99
+> (* 5 99)
+495
+> 
+  #+end_src
+
+  When we write a compound expression, we enclose them in
+  open and close brackets.  This is the only syntax in the
+  language we are going to learn.
+
+  A /combination/ is nothing but list of delimited
+  expressions, with  left most expression is the /procedure/
+  and the rest are /parameters/.
+
+  In our case, the left most expression is an operator and
+  the rest are operands.
+
+  In a compound expression, the first expression is
+  evaluated with  other expressions as operands for that
+  expression.  
+
+  The convention placing the operator to the left of
+  operands is known as /prefix notation./
+
+  This may confuse at first, as it significantly deviates
+  from our normal convention.
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src Java
+  int a = 34 + 65
+  #+end_src
+
+  But it has got several advantages. For example, as shown
+  below, a procedure can accommodate arbitrary number of
+  arguments.
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme
+  > (+ 2 4 6 8)
+  20
+  > 
+  #+end_src
+
+  Another advantage of this notation is that combinations
+  can be nested.
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme
+  > (+ (* 3 (- 10 6)))
+  12
+  #+end_src
+
+  Actually, there is no limit for such nested expressions.
+
+  For example,
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme
+> (+ (* 3 (+ (* 2 4) (+ 3 5))) (+ (- 10 7) 6))
+  #+end_src
+
+  is a valid expression.  However, reading this expression
+  may be difficult, so we use proper delimitation for human
+  understanding known as /pretty-printing/.
+
+  The same expression can be written as:
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme
+> (+ (* 3
+        (+ (* 2 4)
+           (+ 3 5)))
+     (+ (- (- 10 7)
+           6)))
+45
+  #+end_src
+  
+  This will increase the readability of the program. By
+  default, Dr. Racket provides indentation and parenthesis
+  match.
+
+* The first primitive
+
+  We are ready to use the first primitive in our language.
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme
+  (define size 2)
+  #+end_src
+
+  *define* is a built-in  primitive used for defining
+   variables and functions (procedures).
+
+  As we have mentioned in our first lecture, we will have
+  very few primitives to remember. However, there is a word
+  of caution. The scheme *Programmers Guide* released in
+  2018 has many primitives defined.
+
+  We need not worry about that, because through out our
+  course we will be using the primitives discussed here only
+  except for two or three which come in the next  chapter.
+
+  Another thing to remember is that *Lisp* is a meta
+  programming language, and if we don't find a primitive, it
+  is easy to define them.
+
+  The complete code as in Dr. Racket is:
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme
+   > (define size 2)
+   > size
+   2
+   > (* 4 size)
+   8
+  #+end_src
+
+  In the similar way, we can define our first procedure
+  also.
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme
+   > (define (square x)
+       (* x x))
+   > (square 10)
+   100
+  #+end_src
+
+  Our language is almost complete, but we need some
+  conditionals also.
+
+* Conditional Expressions and Predicates
+
+  Often during the execution of process we need to take
+  decisions. You are familiar with the constructs
+  *if-then-else, for, while, do-while,* etc.
+
+  Our language has only two conditionals: They are *cond*
+  and *if*.
+
+  It is easy to remember when we have multiple decisions to
+  take, we use *cond* and when we have only two decisions to
+  take we use *if*.  *cond* can be considered as
+  *switch-case* in the normal programming languages.
+
+  We write our first procedure with *cond*. The procedure is
+  to get the absolute value of a given number.
+
+  We know that,
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme
+  abs(x) = x  if x > 0
+         = 0  if x = 0
+         = -x if x < 0
+  #+end_src
+
+  This can be easily written as:
+  #+ATTR_LATEX: :options frame=single 
+  #+begin_src scheme
+  > (define (absolute x)
+      (cond ((> x 0) x)
+            ((= x 0) 0)
+            ((< x 0) (- x))))
+  > (absolute -3)
+  3
+  #+end_src
+
+  The reason for using *absolute* instead of *abs* is that
+  *abs* is already defined in *Dr.Racket*.
+
+  Coming back to the code, *cond* has three conditions and
+  for each condition, we use ~(<predicate> <expression)~
+
+  The general form is:
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme
+  (cond ((<predicate>) (<expression>))
+        ((<predicate>) (<expression>))
+        ...
+        ((<predicate>) (<expression>)))
+  #+end_src
+
+  We will use only when we know all the possibilities
+  clearly.  If we want to include all other possibilities, we
+  use *else* as the last statement.
+
+  As an example, our *absolute* function can be  written as:
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme
+  > (define (absolute x)
+      (cond ((> x 0) x)
+            ((= x 0) 0)
+            (else (- x))))
+  > (absolute -3)
+  3
+  >
+  #+end_src
+
+  If we have exactly 2 possibilities, we can use *if*
+  statement.
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme
+   > (define (absolute x)
+       (if (< x 0) (- x)
+           x))
+   > (absolute -3)
+   3
+  #+end_src
+
+  
+  We can also have *and*, *or* and *not*.
+
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme
+  (and (> x 0) (> y 0))
+  (or (> x 0) (> y 0))
+  (not (> x 0))    
+  #+end_src
+
+  Before closing this session, we see a trivial but not
+  important primitive which  all of you are egarly awaiting.
+
+  It is to print to screen.
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme 
+  > (display "hello world")
+  hello world
+  #+end_src
+  
+  We won't be using this primitive for some reason. Because
+  all our procedures will return a value and they represent
+  an abstraction layer for building bigger applications.
+
+  To put it another way, *display* is a primitive with *side
+  effect*, that means, it talks to external system while
+  executing.
+

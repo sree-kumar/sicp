@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{p}{(}\PYG{k}{and }\PYG{p}{(}\PYG{n+nb}{\PYGZgt{} }\PYG{n+nv}{x} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{p}{(}\PYG{n+nb}{\PYGZgt{} }\PYG{n+nv}{y} \PYG{l+m+mi}{0}\PYG{p}{))}
+\PYG{p}{(}\PYG{k}{or }\PYG{p}{(}\PYG{n+nb}{\PYGZgt{} }\PYG{n+nv}{x} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{p}{(}\PYG{n+nb}{\PYGZgt{} }\PYG{n+nv}{y} \PYG{l+m+mi}{0}\PYG{p}{))}
+\PYG{p}{(}\PYG{n+nb}{not }\PYG{p}{(}\PYG{n+nb}{\PYGZgt{} }\PYG{n+nv}{x} \PYG{l+m+mi}{0}\PYG{p}{))}
+\end{Verbatim}

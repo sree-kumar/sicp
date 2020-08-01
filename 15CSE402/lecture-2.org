@@ -1,0 +1,161 @@
+#+TITLE: Our Language
+#+BEAMER_HEADER: \subtitle{\tiny{15CSE220 :: SICP}}
+#+AUTHOR: R Sreekumar
+#+OPTIONS: H:1 toc:nil \n:nil @:t ::t |:t ^:t *:t TeX:t LaTeX:t
+#+LATEX_CLASS: beamer
+#+LATEX_CLASS_OPTIONS: [presentation]
+#+BEAMER_THEME: Madrid
+#+COLUMNS: %45ITEM %10BEAMER_ENV(Env) %10BEAMER_ACT(Act) %4BEAMER_COL(Col) %8BEAMER_OPT(Opt)
+#+STARTUP: beamer
+#+LaTeX_HEADER: \usepackage{minted}
+
+* Dr. Racket
+:PROPERTIES:
+   :BEAMER_env: block
+   :BEAMER_col: 1.0
+   :END:
+   #+ATTR_LATEX: :width 10cm :height 6cm 
+   [[file:racket.png]]
+
+* Expressions
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme
+  > 142
+  142
+  > 
+  #+end_src
+ 
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme
+   > something
+   . . something: undefined;
+    cannot reference undefined identifier
+   > 
+  #+end_src
+
+* Error in MIT-SCHEME
+:PROPERTIES:
+   :BEAMER_env: block
+   :BEAMER_col: 1.0
+   :END:
+   #+ATTR_LATEX: :width 10cm :height 6cm 
+   [[file:mit-scheme-error.png]]
+
+* Combinations
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme
+> (+ 34 65)
+99
+> (* 5 99)
+495
+> 
+  #+end_src
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme
+> (+ 2 4 6 8)
+20
+> 
+  #+end_src
+* Expressions (contd.)
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme
+> (+ (* 3 (+ (* 2 4) (+ 3 5))) (+ (- 10 7) 6))
+45
+  #+end_src
+
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme 
+> (+ (* 3
+        (+ (* 2 4)
+           (+ 3 5)))
+     (+ (- (- 10 7)
+           6)))
+45
+  #+end_src
+
+* Primitive Procedures
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme
+   > (define size 2)
+   > size
+   2
+   > (* 4 size)
+   8
+  #+end_src
+
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme
+   > (define (square x)
+       (* x x))
+   > (square 10)
+   100
+  #+end_src
+
+* Conditional Expressions and Predicates
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme
+  > (define (absolute x)
+      (cond ((> x 0) x)
+            ((= x 0) 0)
+            ((< x 0) (- x))))
+  > (absolute -3)
+    3
+    #+end_src
+ 
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme
+   > (define (absolute x)
+       (if (< x 0) (- x)
+           x))
+   > (absolute -3)
+   3
+  #+end_src
+
+* Conditionals (contd)
+  #+ATTR_LATEX: :options frame=single
+  #+begin_src scheme
+  (and (> x 0) (> y 0))
+  (or (> x 0) (> y 0))
+  (not (> x 0))
+  #+end_src
+
+* Few more
+  
+  So far, we have seen
+  - define
+  - cond
+  - if
+  - and, or, not
+
+  We have few more procedures
+  - lambda
+  - let
+  - cons, car, cdr
+
+  This is more than enough for us explain the computational
+  process. We don't need any more.
+
+*** End of Syntax
+   :PROPERTIES:
+   :BEAMER_env: block
+   :BEAMER_col: 1.0
+   :END:
+    Thus completes our programming language.
+
+* A word of Caution
+  - Both Dr.Racket Documentation[fn:1] and MIT-Scheme Reference
+    Manual[fn:2] consists of lots of primitive.
+  - We need not worry about that for two reasons:
+    + This syntax is more than enough to describe procedure
+    + A new procedure (as in the references), can be easily
+      created with the above primitives.
+  
+   However, interested students are encouraged to go through
+    these references.
+
+
+* Footnotes
+
+[fn:2]https://www.gnu.org/software/mit-scheme/documentation/stable/mit-scheme-ref.pdf 
+
+[fn:1]https://docs.racket-lang.org/ 

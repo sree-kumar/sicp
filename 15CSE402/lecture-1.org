@@ -1,0 +1,169 @@
+#+TITLE: Course Introduction
+#+BEAMER_HEADER: \subtitle{\tiny{15CSE220 :: SICP}}
+#+AUTHOR: R Sreekumar
+#+OPTIONS: H:1 toc:nil \n:nil @:t ::t |:t ^:t *:t TeX:t LaTeX:t
+#+LATEX_CLASS: beamer
+#+LATEX_CLASS_OPTIONS: [presentation]
+#+BEAMER_THEME: Madrid
+#+COLUMNS: %45ITEM %10BEAMER_ENV(Env) %10BEAMER_ACT(Act) %4BEAMER_COL(Col) %8BEAMER_OPT(Opt)
+#+STARTUP: beamer
+* Welcome to 15CSE220 
+ #+begin_quote
+    "I think it is extraordinarily import that we in
+    computer science keep fun in computing."
+    -- Alan J Perils
+  #+end_quote
+
+* The SICP book
+  #+begin_quote
+  What can be said about it that hasn't been said a thousand
+  times before? 
+
+  It is perhaps the single greatest computer
+  science textbook.
+
+  It is renowned for its imaginative exercises and
+  mind-blowing techniques.[fn:1]
+  #+end_quote
+
+* What does it teach?
+
+  It teaches:[fn:2]
+  - Principles of Computer Programming
+  - Recursion
+  - Abstraction
+  - Modularity
+  - Program Language Design and
+  - Implementation
+
+* What we are going to study?
+  #+begin_quote
+  "We are about to study the idea of /computational
+  process/".[fn:3]
+  #+end_quote
+ 
+  We are going to understand about:
+  - /Computational Process/.
+  - /Processes/ that manipulate /data/.
+  - pattern of rules called /program/.[fn:4]
+
+* LISP - Our Language
+
+  Just as:
+  - our everyday thoughts are expressed by natural languages,
+  - descriptions and quantitative phenomena are expressed by
+    mathematical notations,
+
+  *Our procedural thoughts will be expressed in Lisp.*
+
+* Why Lisp?
+
+  If Lisp is not a mainstream language, why are we using it
+  as the framework for our discussion on programming?
+
+  Because the language possesses:
+  - excellent medium for studying important programming
+    constructs,
+  - data structures, and
+  - a medium to relate them.
+
+* More precisely Scheme
+  - Scheme, a dialect of Lisp
+  - Invented by Guy Lewis and Gerald Jay Sussman at MIT
+    in 1975.
+  - Re-implemented for instructional use later.
+
+* Minimal Syntax
+  - Scheme has minimal syntax.
+  - Very few primitive procedures (less than 10)
+  - Good for building bigger applications by composing
+    smaller procedures.
+
+* Our Development Environment
+
+  - Dr.Racket[fn:5]
+  - Powerful Tool
+  - Earlier known as PLT[fn:6] Scheme
+  - Top region for typing programs
+  - Bottom region for REPL
+
+* Racket IDE
+   :PROPERTIES:
+   :BEAMER_env: block
+   :BEAMER_col: 1.0
+   :END:
+   #+ATTR_LATEX: :width 10cm :height 6cm 
+   [[file:racket.png]]
+
+* Instructions
+***  Instructions
+   :PROPERTIES:
+   :BEAMER_env: block
+   :BEAMER_col: 0.4
+   :END:
+   - Download from the site
+   - Change your language to =R5S5=.
+*** Screen
+   :PROPERTIES:
+   :BEAMER_env: example
+   :BEAMER_col: 0.5
+   :END:
+   #+ATTR_LATEX: width=\textwidth
+   [[file:R5S5.png]]
+
+* Syllabus
+  
+  First three chapters of the book:
+  - Building Abstractions from Procedures
+  - Building Abstractions from Data
+  - Modularity, Objects and State
+
+* Evaluation Pattern
+
+  Mostly the evaluation is continuous through out the
+  semester and consists of:
+  - Quizzes
+  - Live Interactions
+  - Programming assignments with Viva
+
+* Other Reading Materials
+  - Little Schemer
+  - Reasoned Schemer
+  - Simply Scheme
+  - How to Design Programs
+  
+  and many more online materials...
+
+* Faculty
+  - Ms. Prathibha Mol
+  - Mr. Sumesh K J
+  - (occasionally) Dr.R.Sreekumar
+
+* In the next class
+
+  - Next, we will have a brief (no, complete) introduction scheme.
+  - We prefer to call Scheme as ``our language''.
+  - Because authors prefers so.
+
+ 
+  #+begin_center
+  Thank You!!!
+  #+end_center
+
+* Footnotes
+
+[fn:7]More on this in next session. 
+
+[fn:6]Programming Languages Team 
+
+[fn:5]https://racket-lang.org/ 
+
+[fn:4] In our case procedures. 
+
+[fn:3]p 1; SICP book 
+
+
+[fn:2]https://en.wikipedia.org/wiki/Structure_and_Interpretation_of_Computer_Programs
+ 
+
+[fn:1]https://www.gwern.net/sicp/Introduction 

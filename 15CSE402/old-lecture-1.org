@@ -1,0 +1,124 @@
+#+TITLE: Course Introduction
+#+BEAMER_HEADER: \subtitle{\tiny{15CSE220 :: SICP}}
+#+AUTHOR: R Sreekumar
+#+OPTIONS: H:1 toc:nil \n:nil @:t ::t |:t ^:t *:t TeX:t LaTeX:t
+#+LATEX_CLASS: beamer
+#+LATEX_CLASS_OPTIONS: [presentation]
+#+BEAMER_THEME: Madrid
+#+COLUMNS: %45ITEM %10BEAMER_ENV(Env) %10BEAMER_ACT(Act) %4BEAMER_COL(Col) %8BEAMER_OPT(Opt)
+#+STARTUP: beamer
+
+* What is this course?
+
+ - To understand how programs work (process)
+ - To understand how to write programs (procedure)
+ - To understand how to build large systems
+ - To understand the power of abstraction
+
+* What is old?
+
+ - To understand how programs work (process)
+ - To understand how to write programs (procedure)
+ - To understand how to build large systems
+ - To understand the power of abstraction
+
+* Then why is the course?
+
+ - To learn things in a different prespective.
+
+* What you learn?
+ 
+ - procedures and their abstraction
+ - Data and their abstraction
+ - And more ...
+
+* The Programming language
+*** Language
+  :PROPERTIES:
+  :BEAMER_env: block
+  :BEAMER_col: 0.6
+  :END:
+  - We use *SCHEME* for our purpose
+  - A varient of of *LISP*
+  - A functional Programming language
+  - Developed at MIT for teaching 6.001
+  
+*** Reason
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.3
+    :END:
+    MINIMAL SYNTAX 
+
+*** Note
+    :PROPERTIES:
+    :BEAMER_env: alertblock
+    :END:
+    Note: Most of the questions will be
+    program related, so you are requested to be comfortable
+    with Scheme.
+* Tool we are going to use
+
+*** Software 
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.4
+    :END:
+
+    - We will be using Dr.Racket IDE.
+    - Consists of Two Parts:
+      + Upper one to type programs
+      + Lower one to evaluate programs
+
+*** Dr. Racket
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.4
+    :END:      
+    #+ATTR_LATEX: width=\textwidth
+    [[./racket.png]]
+
+* A word of Caution
+
+  - Racket is a full fledged IDE
+  - Though looks simple, it has many features.
+  - Refer: [[https://racket-lang.org/][Dr.Racket]]
+
+* Other tools
+*** MIT SCHEME
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.4
+    :END:
+    #+ATTR_LATEX: width=\textwidth
+    [[file:mit-scheme.png]]
+
+*** CLISP
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.4
+    :END:      
+    #+ATTR_LATEX: width=\textwidth
+    [[./clisp.png]]
+
+* Working Environment
+*** REPL
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.5
+    :END:
+  - Most of the time, we will be in  REPL
+  - For complicated programs, we will use editors.
+  - You can use built-in editor of Dr.Racket, but be
+    careful.
+  - Everytime, you run the program the REPL will get
+    refreshed.
+  - More on this later.
+* A sample Code
+  #+begin_src 
+  (define (foo x)
+     (* 10 x))
+  #+end_src
+
+* Footnotes
+

@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nv}{abs}\PYG{p}{(}\PYG{n+nf}{x}\PYG{p}{)} \PYG{n+nv}{=} \PYG{n+nv}{x}  \PYG{k}{if }\PYG{n+nv}{x} \PYG{n+nv}{\PYGZgt{}} \PYG{l+m+mi}{0}
+       \PYG{n+nv}{=} \PYG{l+m+mi}{0}  \PYG{k}{if }\PYG{n+nv}{x} \PYG{n+nv}{=} \PYG{l+m+mi}{0}
+       \PYG{n+nv}{=} \PYG{n+nv}{\PYGZhy{}x} \PYG{k}{if }\PYG{n+nv}{x} \PYG{n+nv}{\PYGZlt{}} \PYG{l+m+mi}{0}
+\end{Verbatim}

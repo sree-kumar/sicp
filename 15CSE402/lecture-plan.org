@@ -1,0 +1,16 @@
+;; This buffer is for notes you don't want to save, and for Lisp evaluation.
+;; If you want to create a file, visit that file with C-x C-f,
+;; then enter the text in that file's own buffer.
+
+* Lecture Division
+
+| Lecture | Title                   | Reference |
+|---------+-------------------------+-----------|
+|      1. | Course Introduction     |           |
+|      2. | Scheme Introduction     |           |
+|      3. | Expressions             |           |
+|      5. | Compound Procedures     |           |
+|      4. | Evaluating Combinations |           |
+|      5. | Substitution Model      |           |
+|      6. | Applicative Model       |           |
+|         |                         |           |

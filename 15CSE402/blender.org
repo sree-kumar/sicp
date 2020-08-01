@@ -1,0 +1,8 @@
+
+
+
+* Increase the number of frame to accomadate the whole video
+* Change the  audio to waveform (script - audio  wave form)
+* Play the  video
+* To avoid jerky, change the video frame rate.
+* Create a proxy video

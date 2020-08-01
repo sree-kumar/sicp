@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nv}{\PYGZgt{}} \PYG{p}{(}\PYG{n+nb}{+ }\PYG{l+m+mi}{34} \PYG{l+m+mi}{65}\PYG{p}{)}
+\PYG{l+m+mi}{99}
+\PYG{n+nv}{\PYGZgt{}} \PYG{p}{(}\PYG{n+nb}{* }\PYG{l+m+mi}{5} \PYG{l+m+mi}{99}\PYG{p}{)}
+\PYG{l+m+mi}{495}
+\PYG{n+nv}{\PYGZgt{}}
+\end{Verbatim}

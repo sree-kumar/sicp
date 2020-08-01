@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nv}{\PYGZgt{}} \PYG{n+nv}{something}
+\PYG{o}{.} \PYG{o}{.} \PYG{n+nv}{something:} \PYG{n+nv}{undefined}\PYG{c+c1}{;}
+ \PYG{n+nv}{cannot} \PYG{n+nv}{reference} \PYG{n+nv}{undefined} \PYG{n+nv}{identifier}
+\PYG{n+nv}{\PYGZgt{}}
+\end{Verbatim}

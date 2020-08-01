@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{p}{(}\PYG{k}{define }\PYG{p}{(}\PYG{n+nf}{square} \PYG{n+nv}{x}\PYG{p}{)}
+   \PYG{p}{(}\PYG{n+nb}{* }\PYG{n+nv}{x} \PYG{n+nv}{x}\PYG{p}{))}
+\end{Verbatim}

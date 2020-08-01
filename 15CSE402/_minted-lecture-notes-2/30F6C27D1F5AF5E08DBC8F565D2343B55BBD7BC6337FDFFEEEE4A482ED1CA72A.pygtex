@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nv}{\PYGZgt{}} \PYG{p}{(}\PYG{n+nb}{+ }\PYG{p}{(}\PYG{n+nb}{* }\PYG{l+m+mi}{3} \PYG{p}{(}\PYG{n+nb}{\PYGZhy{} }\PYG{l+m+mi}{10} \PYG{l+m+mi}{6}\PYG{p}{)))}
+\PYG{l+m+mi}{12}
+\end{Verbatim}

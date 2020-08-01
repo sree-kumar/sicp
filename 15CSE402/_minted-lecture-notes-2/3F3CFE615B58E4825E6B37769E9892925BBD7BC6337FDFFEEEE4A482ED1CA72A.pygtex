@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{p}{(}\PYG{k}{cond }\PYG{p}{((}\PYG{n+nf}{\PYGZlt{}predicate\PYGZgt{}}\PYG{p}{)} \PYG{p}{(}\PYG{n+nf}{\PYGZlt{}expression\PYGZgt{}}\PYG{p}{))}
+      \PYG{p}{((}\PYG{n+nf}{\PYGZlt{}predicate\PYGZgt{}}\PYG{p}{)} \PYG{p}{(}\PYG{n+nf}{\PYGZlt{}expression\PYGZgt{}}\PYG{p}{))}
+      \PYG{o}{...}
+      \PYG{p}{((}\PYG{n+nf}{\PYGZlt{}predicate\PYGZgt{}}\PYG{p}{)} \PYG{p}{(}\PYG{n+nf}{\PYGZlt{}expression\PYGZgt{}}\PYG{p}{)))}
+\end{Verbatim}

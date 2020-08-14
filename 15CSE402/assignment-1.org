@@ -1,0 +1,80 @@
+#+TITLE: Assignment 1
+#+SUBTITLE: 15CSE220 :: SICP
+#+AUTHOR: R.Sreekumar, Ph.D.
+#+EMAIL: sreekumar@am.amrita.edu
+#+LaTeX_HEADER: \usepackage{charter}
+#+OPTIONS: toc:nil
+
+* Before we start
+
+  We strongly encourage you to try all the problems as they
+  are very easy to solve.  Solutions are available around
+  the web. We strongly discourage *copy/paste* from either your
+  classmates or from web. As an example, from Reddit
+  answers,
+[[file:~/Pictures/reddit.png]]
+
+  we understand that looking at answers is not a wrong thing
+  if you do it earnestly.
+
+  Still, if you are lazy, and like to copy/paste, please
+  read the answer from Quora.
+
+  [[https://www.quora.com/How-do-interviewers-find-out-that-a-candidate-is-cheating-in-a-technical-telephone-interview-onsite-interview][How do interviewers find out that a candidate is cheating
+  in a technical telephone interview/onsite interview?]]
+
+  We have mechanisms in place to know whether it is your
+  effort or others effort.
+
+  Don't cheat. After all, you can cheat only you and not
+  others. 
+
+* Questions
+1. Evaluate the following expressions
+
+   1. 10
+   2. (+ 5 3 4)
+   3. (- 9 1)
+   4. (/ 6 2)
+   5. (+ (* 2 4) (- 4 6))
+   6. (+ 1/2 1/2)
+   7. (- 1.5 1/2)
+   8. (* 3 1/2)
+   9. (/ 1.5 3/4)
+   10. (+ (+ 2 2) (+ 2 2))
+   11. (- 2 (* 4 1/3))
+   12. (* 2 (* 2 (* 2 (* 2 2))))
+   13. (/ (* 6/7 7/2) (- 4.5 1.5))
+
+2. Evaluate the following expressions
+
+   1. (define a 3)
+   2. (define b (+ a 1))
+   3. (+ a b (* a b))
+   4. (= a b)
+
+3. Write the prefix notation for the following equation.
+   [[file:~/Pictures/equation.png]]
+
+4. Convert the following arithmetic expressions into Scheme
+   expressions and evaluate them. 
+   [[file:~/Pictures/equations-2.png]]
+
+5. Write a procedure *(!= x y)* which returns *#f* if *x = y*,
+   *#t* otherwise.
+
+6. Imagine that *Scheme* or *Lisp* uses *infix notation* for
+   evaluation. What additional step has to be taken for
+   evaluating *expressions* according to you. (Hint: You
+   studied in Compilers)
+
+7. If you type *(1 2 3 4)*, it will throw an error. On the
+   other hand, if you type *'(1 2 3 4)* it will accept.
+   Give reason for this behaviour.
+
+8. List the features you enjoy most in your favourite
+   programming language which are absent in *Scheme*.
+
+9. In lecture 2, when we typed "Hello World" Dr.Racket
+   printed "Hello World" back. Why? Can you guess the reason?
+

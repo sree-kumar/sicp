@@ -1,5 +1,5 @@
-#+TITLE: Course Introduction
-#+BEAMER_HEADER: \subtitle{\tiny{15CSE220 :: SICP}}
+#+TITLE: Lecture 1: Course Introduction
+#+BEAMER_HEADER: \subtitle{\tiny{15CSE402 :: SICP}}
 #+AUTHOR: R Sreekumar
 #+OPTIONS: H:1 toc:nil \n:nil @:t ::t |:t ^:t *:t TeX:t LaTeX:t
 #+LATEX_CLASS: beamer
@@ -7,9 +7,9 @@
 #+BEAMER_THEME: Madrid
 #+COLUMNS: %45ITEM %10BEAMER_ENV(Env) %10BEAMER_ACT(Act) %4BEAMER_COL(Col) %8BEAMER_OPT(Opt)
 #+STARTUP: beamer
-* Welcome to 15CSE220 
+* Welcome to 15CSE402 
  #+begin_quote
-    "I think it is extraordinarily import that we in
+    "I think it is extraordinarily important that we in
     computer science keep fun in computing."
     -- Alan J Perils
   #+end_quote
@@ -85,7 +85,7 @@
   - Powerful Tool
   - Earlier known as PLT[fn:6] Scheme
   - Top region for typing programs
-  - Bottom region for REPL
+  - Bottom region for REPL[fn:8]
 
 * Racket IDE
    :PROPERTIES:
@@ -102,7 +102,7 @@
    :BEAMER_col: 0.4
    :END:
    - Download from the site
-   - Change your language to =R5S5=.
+   - Change your language to =R5RS=.
 *** Screen
    :PROPERTIES:
    :BEAMER_env: example
@@ -152,6 +152,8 @@
 
 * Footnotes
 
+[fn:8]Read Evaluate Print Loop 
+
 [fn:7]More on this in next session. 
 
 [fn:6]Programming Languages Team 
@@ -160,7 +162,7 @@
 
 [fn:4] In our case procedures. 
 
-[fn:3]p 1; SICP book 
+[fn:3]page 1; SICP book 
 
 
 [fn:2]https://en.wikipedia.org/wiki/Structure_and_Interpretation_of_Computer_Programs

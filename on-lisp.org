@@ -1,0 +1,174 @@
+* From discussion in Hacker News 
+  [[https://news.ycombinator.com/item?id=7085682][Hacker News]]
+I don't find the arguments against macros workable since the
+emergence of syntax transformation while modeling a problem
+shows many deep relationships between parts of the domain
+.. in the cases I've seen. Just want to share some stuff
+that I haven't seen others write about.
+
+I don't code much lisp these days (though getting into
+clojurescript a bit now), but when I used to, the cycle went
+pretty much like this -
+
+1. Express what you want to express as an s-expression,
+   capturing known structures in the simplest way I can
+   think of.
+
+2. Figure out which aspects can be "functions" straight
+   forwardly and which are macros and implement them.
+
+3. Test and iterate a bit till I like the way domain
+   elements are composing and the way the composition looks
+   in code. Try to reduce the required concepts in each
+   iteration.
+
+4. Document the relationships that have emerged from this
+   process so others can understand it.
+
+5. Usually I'm done, but sometimes (the few) users of my
+   "api" come back with questions, based on which I iterate
+   a bit more.
+
+I've mostly followed this in building the "editing style
+specification language"[1] part of the product "muvee
+Reveal" (an automatic video editor)[2], built in a custom
+scheme dialect called "muSE"[3]. (Full disclosure: I've
+happily worked for muvee Technologies from 2002 to 2011.)
+
+Btw - most discussion on macros and lisp seem to first
+assume that there two things - a) functions and b)
+macros. There are more, depending on the kind of lisp system
+you're working with.
+
+You could form a taxonomy of sorts based on whether argument
+forms are evaluated and whether the result form is
+evaluated -
+
+1. Argument forms are evaluated before "apply", result is a
+   value (i.e. not evaluated). => Function
+
+2. Argument forms are unevaluated before "apply", result is
+   code (i.e. is evaluated). => Traditional macro
+
+3. Argument forms are evaluated before "apply", result is
+   code (i.e. is evaluated).
+
+4. Argument forms are unevaluated before "apply", result is
+   a value. => Traditional macro (depending on system)
+
+In the course of using the domain modeling approach above,
+I've written stuff like functions that create one or more
+macros, macros that evaluate to function values (not
+s-expressions) and such stuff that might be considered an
+"abomination" by the OP ... but in the context of the
+domain, the concepts are usually clear enough to be used
+without major issues.
+
+[1]: https://code.google.com/p/muvee-style-authoring/ 
+[2]: http://www.muvee.com/en/products/reveal 
+[3]: https://code.google.com/p/muvee-symbolic-expressions/ 
+
+ We use top-down design to decide what the interface for a
+ given abstraction layer will look like, and bottom-up to
+ decide which functions should be written in the layer
+ below; then we cycle that process by refining the layer
+ below through the same process of defining its interface
+ top-down and then the layer below it as bottom-up. And we
+ use algebraic type checking along with contracts to enforce
+ post-conditions and properly assign the blame to the right
+ portion of the code to speed up debugging. These are all
+ old techniques.
+
+We're a team of 6 programmers, 3 of which code Typed
+Racket. We all started here as Rails devs and got tired of
+it. I'm always pushing to invest time in research for better
+solutions and our team seems to be open to that (after weeks
+of discussion, though - we're no heaven). Typed Racket is
+the solution we found after surveying the field. Our
+management has recently told us they believe we're now a
+good-sized team given the projects we have to maintain. If
+it gets out of hand I'll be glad to know that there are
+people we can hire to work with these technologies. We're
+based in NYC.
+
+To be fair and not to mischaracterize the situation, I have
+been programming in lisp for at least 5 years in personal
+projects, so it's not like I had to learn it now and I also
+did not convert from Ruby to lisp.
+
+I never liked Rails. I don't like anything that focuses on
+files, because in my mind the fact that code needs to be
+saved in the filesystem is simply incidental, so no code
+should rely on that fact; but Rails builds on top of that,
+telling you where to put your code (folder structure),
+taking control from you over what code sees what code (MVC),
+giving you command-line tools to use when it could simply
+provide functions at a REPL (gems, migrations, tests),
+etc. It simply doesn't get it at all.
+
+In my opinion, a framework (loosely speaking) that solves
+only the easy problems (how to organize code) is
+pointless. But something like an FRP library that allows me
+to do GUI by focusing on how I want to transform data, and
+liberating me from thinking about events and callbacks -
+THAT to me is something that solves a hard problem.
+
+So to answer your first question, I'm happy not to need to
+touch Rails again - right now I only need to look at it,
+rewrite it in Racket, and delete it.
+
+Racket is a much nicer system than Clojure, it has immensely
+intelligent people behind it, the documentation is stellar
+(unbelievably so, in my opinion), there are libraries for
+everything you can imagine and more (like an FRP
+library). It also does native GUI everywhere,
+effortlessly. For things it lacks, it is easy to write an
+FFI.
+
+I would never touch Java nor trust any library written in
+Java. The more I code the more I distrust code that relies
+on mutability. I haven't reached 100% pure code yet but I
+work towards that goal, not away from it.
+
+EDIT: Yes, I am using Racket for a webapp that connects to a
+database and perform general CRUD operations.
+
+Clojure is Java. I fundamentally disagree with everything
+Java. Java is also clunky. The environment that needs to be
+installed and maintained for Clojure is a lot more complex
+and subdivided than the one for Racket (which is an
+all-in-one batteries-included deal). I believe Clojure might
+be a good option for those coming from Java, if they want to
+breathe a little, but if I'm already free, it would be a
+step backwards for me. Racket is a true Scheme (regardless
+of whether they like being called that).
+
+Also, I already knew Scheme and its simplicity is very
+appealing to me. If there's a feature lacking, I can
+implement it. Not true for Clojure, which lacks several
+important foundational features (TCO, continuations...).
+
+Why would you choose Clojure over Racket? (I'd only be
+interested in hearing the reasons someone that isn't a Java
+programmer would have).
+
+ It does make me believe that all their SICP reading was for
+ nothing (I've only lightly skimmed SICP and I don't pretend
+ to have read it).
+
+** Thinks to read tomorrow:
+   [[http://www.trollope.org/scheme.html][High School Computing: The Inside Story]]
+   [[http://cl-cookbook.sourceforge.net/clos-tutorial/][Fundamentals of CLOS]]
+   The Common Lisp Object System: An Overview (pdf)
+   [[file:~/lockdown/lisp/lsp.pdf][The Liskov Substitution Principle]] (pdf)
+   [[https://github.com/LispCookbook/cl-cookbook][Common Lisp Cookbook]] (must read for emacs configuration)
+   [[https://lispcookbook.github.io/cl-cookbook/][Common Lisp Cookbok]] (same as above)
+   [[https://github.com/KaratasFurkan/.emacs.d][My Literate .emacs configuration]] (must read)
+
+
+* From the lectures of MIT 
+  (Transcrpits are available in ~/lock-down/lisp/)
+** 1.A Overview and Introduction to Lisp.
+  - Black-box abstraction
+  - Conventional Interfaces
+  - Meta lingustic abstraction

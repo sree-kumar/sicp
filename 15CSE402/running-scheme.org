@@ -1,0 +1,67 @@
+
+#+TITLE: Running Scheme
+#+SUBTITLE: 15CSE220 :: SICP
+#+AUTHOR: R.Sreekumar, Ph.D.
+#+EMAIL: sreekumar@am.amrita.edu
+#+LaTeX_HEADER: \usepackage{charter}
+#+OPTIONS: toc:nil
+* Introduction
+  There are more than  one way to run the *Scheme*
+  program. In this brief note, we will discuss them one by
+  one.
+
+* Dr. Racket
+  We will be using *Dr.Racket* as our development
+  environment. 
+
+** Using REPL 
+   This is the normal way,we will be interacting with
+   *Scheme*.  We have seen that in one our previous
+   videos. However, when the program goes beyond 4 lines, we
+   may prefer to type it as a program.  This is also
+   *important* as you  have to submit your assignments.
+*** Method 1
+   1. Type the program in *Program Area*
+   2. Click the run button.
+   3. The results will be shown in the REPL area.
+
+   Note: The REPL is refreshed when you click.  So all the
+   definitions and code you have written will go once you
+   click *Run*.
+
+*** Method 2 (preferred)
+   1. Type the program in *Program Area*.
+   2. Save the file in the  desired location with *.scm*
+      extension.
+   3. Use *~(load "/path/to/dir/file.scm")~*
+   4. Now, your procedure is ready for use.
+   5. Whenever you modify the code in program, use Step.3.
+
+   Note: The advantage is that your file is saved for future
+   use, you can modify it accordingly and the  global
+   environment is never lost.
+
+** From Shell
+
+   If you have properly installed *Dr.Racket*, you will get
+   *racket* command line tool.  All you need is just run
+   #+begin_src sh
+   $ racket file.scm
+   #+end_src
+
+   but remember that, you need to tell which  programming
+   language it is using.  For our convenience, we type
+   #+begin_src scheme
+   #lang racket
+   (define (square x)
+      (* x x))
+   #+end_src
+
+   Notice that, we have added *~#lang racket~* at the
+   top. This is not required when we are working within
+   Scheme.
+
+* From Emacs
+   This is an assignment for the people who are interested.
+   Please figure out yourself.  In case of help,  please
+   contact me at sreekumar@am.amrita.edu.

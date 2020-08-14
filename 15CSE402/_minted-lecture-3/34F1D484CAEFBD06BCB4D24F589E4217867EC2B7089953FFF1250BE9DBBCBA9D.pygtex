@@ -1,0 +1,12 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nv}{\PYGZgt{}} \PYG{p}{(}\PYG{k}{define }\PYG{n+nv}{pi} \PYG{l+m+mf}{3.14159}\PYG{p}{)}
+\PYG{n+nv}{\PYGZgt{}} \PYG{p}{(}\PYG{k}{define }\PYG{n+nv}{radius} \PYG{l+m+mi}{10}\PYG{p}{)}
+
+\PYG{n+nv}{\PYGZgt{}} \PYG{p}{(}\PYG{n+nb}{* }\PYG{n+nv}{pi} \PYG{p}{(}\PYG{n+nb}{* }\PYG{n+nv}{radius} \PYG{n+nv}{radius}\PYG{p}{))}
+\PYG{l+m+mf}{314.159}
+
+\PYG{n+nv}{\PYGZgt{}} \PYG{p}{(}\PYG{k}{define }\PYG{n+nv}{circumference} \PYG{p}{(}\PYG{n+nb}{* }\PYG{l+m+mi}{2} \PYG{n+nv}{pi} \PYG{n+nv}{radius}\PYG{p}{))}
+
+\PYG{n+nv}{\PYGZgt{}} \PYG{n+nv}{circumference}
+\PYG{l+m+mf}{62.8318}
+\end{Verbatim}

@@ -1,0 +1,18 @@
+#+TITLE: Lecture 8: Simple Programs
+#+BEAMER_HEADER: \subtitle{\tiny{15CSE402 :: SICP}}
+#+AUTHOR: R Sreekumar
+#+OPTIONS: H:1 toc:nil \n:nil @:t ::t |:t ^:t *:t TeX:t LaTeX:t
+#+LATEX_CLASS: beamer
+#+LATEX_CLASS_OPTIONS: [presentation]
+#+BEAMER_THEME: Madrid
+#+COLUMNS: %45ITEM %10BEAMER_ENV(Env) %10BEAMER_ACT(Act) %4BEAMER_COL(Col) %8BEAMER_OPT(Opt)
+#+STARTUP: beamer
+#+LaTeX_HEADER: \usepackage{minted}
+* Warning
+  - These programs are only for demonstration
+  - To shift you from imparative style to  functional style
+  - Programs in book are bit difficult
+  - This lecture is only to make things easier.
+
+* Problem 1
+

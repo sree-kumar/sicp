@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nv}{\PYGZgt{}} \PYG{p}{(}\PYG{n+nf}{square} \PYG{l+m+mi}{21}\PYG{p}{)}
+\PYG{l+m+mi}{441}
+\PYG{n+nv}{\PYGZgt{}} \PYG{p}{(}\PYG{n+nf}{square} \PYG{p}{(}\PYG{n+nb}{+ }\PYG{l+m+mi}{2} \PYG{l+m+mi}{5}\PYG{p}{))}
+\PYG{l+m+mi}{49}
+\PYG{n+nv}{\PYGZgt{}} \PYG{p}{(}\PYG{n+nf}{square} \PYG{p}{(}\PYG{n+nf}{square} \PYG{l+m+mi}{3}\PYG{p}{))}
+\PYG{l+m+mi}{81}
+\end{Verbatim}

@@ -1,5 +1,5 @@
-#+TITLE: Our Language
-#+BEAMER_HEADER: \subtitle{\tiny{15CSE220 :: SICP}}
+#+TITLE: Lecture 2: Our Language
+#+BEAMER_HEADER: \subtitle{\tiny{15CSE402 :: SICP}}
 #+AUTHOR: R Sreekumar
 #+OPTIONS: H:1 toc:nil \n:nil @:t ::t |:t ^:t *:t TeX:t LaTeX:t
 #+LATEX_CLASS: beamer
@@ -10,7 +10,7 @@
 #+LaTeX_HEADER: \usepackage{minted}
 
 * Dr. Racket
-:PROPERTIES:
+   :PROPERTIES:
    :BEAMER_env: block
    :BEAMER_col: 1.0
    :END:
@@ -123,18 +123,22 @@
   
   So far, we have seen
   - define
-  - cond
+  - contd
   - if
   - and, or, not
 
   We have few more procedures
   - lambda
   - let
+  - quote
+  - list
   - cons, car, cdr
+
 
   This is more than enough for us explain the computational
   process. We don't need any more.
 
+* End of Syntax
 *** End of Syntax
    :PROPERTIES:
    :BEAMER_env: block

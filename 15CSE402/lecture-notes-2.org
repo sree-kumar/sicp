@@ -36,7 +36,7 @@
 * Combining expressions
   Expressions representing numbers can be combined with a
   primitive expression (or procedure) such as +, /, * to get
-  a combound expression.
+  a compound expression.
   #+ATTR_LATEX: :options frame=single
   #+begin_src scheme 
 > (+ 34 65)
@@ -252,7 +252,7 @@
   #+end_src
 
   Before closing this session, we see a trivial but not
-  important primitive which  all of you are egarly awaiting.
+  important primitive which  all of you are eagerly awaiting.
 
   It is to print to screen.
   #+ATTR_LATEX: :options frame=single

@@ -1,0 +1,98 @@
+#+TITLE: Lecture 4: Compound Procedures
+#+BEAMER_HEADER: \subtitle{\tiny{15CSE402 :: SICP}}
+#+AUTHOR: R Sreekumar
+#+OPTIONS: H:1 toc:nil \n:nil @:t ::t |:t ^:t *:t TeX:t LaTeX:t
+#+LATEX_CLASS: beamer
+#+LATEX_CLASS_OPTIONS: [presentation]
+#+BEAMER_THEME: Madrid
+#+COLUMNS: %45ITEM %10BEAMER_ENV(Env) %10BEAMER_ACT(Act) %4BEAMER_COL(Col) %8BEAMER_OPT(Opt)
+#+STARTUP: beamer
+#+LaTeX_HEADER: \usepackage{minted}
+
+* Recap
+  We have seen in the last class:
+  - Basic elements
+    + Numbers and arithmetic operations[fn:1]
+    + Nesting of combinations
+    + Definitions as means of Abstractions
+
+* Procedure Definitions
+
+  - Powerful abstraction technique
+  - Used to give name for compound expression
+
+* Example
+
+   ``To square something we multiply it by itself.'' 
+   #+ATTR_LATEX: :options frame=single
+   #+begin_src scheme
+   (define (square x) (* x x))
+   #+end_src
+*** Code
+   :PROPERTIES:
+   :BEAMER_env: block
+   :BEAMER_col: 0.8
+   :END:
+   [[file:square.png]]
+
+* Compound Procedures
+  - Giving a name for an  operation
+    + squaring is an operation representing ``multiplying
+      something by itself ''.
+    + The thing to be multiplied is given a local name x
+      (method parameter).
+
+* Some of the uses
+** Code 
+   #+begin_src scheme
+  > (square 21)
+  441
+  > (square (+ 2 5))
+  49
+  > (square (square 3))
+  81
+   #+end_src
+
+
+* General Form
+*** Syntax
+   :PROPERTIES:
+   :BEAMER_env: block
+   :BEAMER_col: 0.8
+   :END:
+   (define (<name> <formal parameters>) <body>)
+
+* Abstractions as building blocks 
+
+** Code
+   #+begin_src scheme
+   > (define (sum-of-squares x y)
+        (+ (square x) (square y)))
+   
+   > (sum-of-squares 3 4)
+   25
+   #+end_src
+
+* Substitution Model
+** Steps
+   #+begin_src scheme
+   (sum-of_squares (+ 5 1) (* 5 2)
+   (+ (square 6) (square 10))
+   (+ 36 100)
+   136
+   #+end_src
+* Footnotes
+
+* Applicative Order
+** Steps
+   #+begin_src 
+   (sum-of-squares (+ 5 1) (* 5 2))
+   
+   (+ (square (+ 5 1)) 
+      (square (* 5 2)))
+   
+   (+ (* (+ 5 1) (+ 5 1)) 
+      (* (* 5 2) (* 5 2)))
+   #+end_src
+[fn:1]Note that, numbers as primitive data types an
+operations are primitive procedures. 
